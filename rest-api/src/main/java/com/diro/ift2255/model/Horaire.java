@@ -3,41 +3,26 @@ package com.diro.ift2255.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalTime;
 
-/**
- * Représente l'horaire d'un cours
- * Avec relation vers la classe Course
- */
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Horaire {
-    // Relation vers Course
     private Course cours;           // Référence vers l'objet Course
     
-    // Informations temporelles
-    private String trimestre;       // Ex: "Automne", "Hiver", "Été"
-    private int annee;              // Ex: 2024
-    private String jourSemaine;     // Ex: "Lundi", "Mardi", etc.
-    private LocalTime heureDebut;   // Ex: 10:00
-    private LocalTime heureFin;     // Ex: 11:30
+    // Informations temporelles spécifiques à l'horaire
+    private int annee;              
+    private String jourSemaine;    
+    private LocalTime heureDebut;  
+    private LocalTime heureFin;     
     
     // Emplacement
-    private String local;           // Ex: "M-2104"
-    private String pavillon;        // Ex: "Pavillon André-Aisenstadt"
+    private String local;          
+    private String pavillon;        
+
     
-    // Constructeur par défaut
-    public Horaire() {}
-    
-    // Constructeur simplifié
-    public Horaire(Course cours, String trimestre) {
-        this.cours = cours;
-        this.trimestre = trimestre;
-    }
-    
-    // Constructeur complet
-    public Horaire(Course cours, String trimestre, int annee,
-                   String jourSemaine, LocalTime heureDebut, LocalTime heureFin,
+    public Horaire(Course cours, int annee, String jourSemaine, 
+                   LocalTime heureDebut, LocalTime heureFin,
                    String local, String pavillon) {
         this.cours = cours;
-        this.trimestre = trimestre;
         this.annee = annee;
         this.jourSemaine = jourSemaine;
         this.heureDebut = heureDebut;
@@ -53,14 +38,6 @@ public class Horaire {
     
     public void setCours(Course cours) {
         this.cours = cours;
-    }
-    
-    public String getTrimestre() {
-        return trimestre;
-    }
-    
-    public void setTrimestre(String trimestre) {
-        this.trimestre = trimestre;
     }
     
     public int getAnnee() {
@@ -109,18 +86,5 @@ public class Horaire {
     
     public void setPavillon(String pavillon) {
         this.pavillon = pavillon;
-    }
-    
-    // Méthodes helper pour accéder facilement aux infos du cours
-    public int getSigleCours() {
-        return cours != null ? cours.getSigle() : 0;
-    }
-    
-    public String getCodeCours() {
-        return cours != null ? cours.getNomCours() : null;
-    }
-    
-    public String getNomCours() {
-        return cours != null ? cours.getTitre() : null;
     }
 }
