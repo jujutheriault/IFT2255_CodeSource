@@ -18,8 +18,7 @@ public class Course {
 
     public Course() {}
 
-    public Course(String id, String name, String desc, String professeur, int credits,
-                  String trimestre, String cycle, String[] prerequis, String[] corequis) {
+    public Course(String id, String name, String desc, String professeur, int credits,String trimestre, String cycle, String[] prerequis, String[] corequis) {
         this.id = id;
         this.name = name;
         this.description = desc;
