@@ -23,23 +23,20 @@ public class TableauComparaison {
         return cours;
     }
 
-    // --- Setter du tableau complet (rarement utilisé) ---
     public void setCours(Cours[] cours) {
         this.cours = cours;
         this.taille = cours.length;
     }
 
-    // --- Ajouter un cours ---
+    //Ajouter un cours
     public void ajouterCours(Cours c) {
         if (taille >= cours.length) {
-            // si le tableau est plein → on l'agrandit automatiquement
             agrandirTableau();
         }
         cours[taille] = c;
         taille++;
     }
 
-    // --- Méthode interne pour agrandir le tableau ---
     private void agrandirTableau() {
         Cours[] nouveau = new Cours[cours.length * 2];
         for (int i = 0; i < cours.length; i++) {
@@ -48,7 +45,7 @@ public class TableauComparaison {
         cours = nouveau;
     }
 
-    // --- Calculer la charge totale ---
+    //Calculer la charge totale
     public int calculChargeTotale() {
         int total = 0;
         for (int i = 0; i < taille; i++) {
@@ -59,7 +56,6 @@ public class TableauComparaison {
         return total;
     }
 
-    // --- Getter pour la taille ---
     public int getTaille() {
         return taille;
     }
