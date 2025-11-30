@@ -75,4 +75,14 @@ public class CourseController {
 
         return queryParams;
     }
+
+    /**
+     * Recherche des cours en fonction des paramètres de requête.
+     * @param ctx Contexte Javalin représentant la requête et la réponse HTTP
+     */   
+    public void searchCourses(Context ctx) {
+        Map<String, String> queryParams = extractQueryParams(ctx);
+        List<Course> courses = service.getAllCourses(queryParams);
+        ctx.json(courses);
+    }
 }

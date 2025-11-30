@@ -9,8 +9,9 @@ public class Etudiant {
     private String programme;
     private int cycle;
     private LocalDateTime debutProgramme;
-    private Preferences preferences;   // enum
-    private String[] coursPasse;       // sigles des cours passés
+
+    private String[] preferences;               // On pourra faire une classe Preferences plus tard
+    private String[] coursPasse;                // On pourra faire une classe sigle plus tard
     private String[] filtres;
 
     public Etudiant() {}
@@ -58,17 +59,22 @@ public class Etudiant {
         return debutProgramme;
     }
 
-    public void setPreferences(Preferences preferences){
-        this.preferences = preferences;
+    public void setPreferences(String[] preferences){
+
+    this.preferences = preferences;
+
     }
-    public Preferences getPreferences(){
+
+    public String[] getPreferences(){
         return preferences;
     }
 
     public void setCoursPasse(String[] coursPasse){
+
         this.coursPasse = coursPasse;
     }
-    public String[] getCoursPasse(){
+
+    public String[] getcoursPasse(){
         return coursPasse;
     }
 
