@@ -1,6 +1,8 @@
 package com.diro.ift2255.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.List;
+import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Course {
@@ -8,29 +10,35 @@ public class Course {
     private String name;
     private String description;
 
-    //Ajouts 
+    // Ajouts basés sur le retour de l'API planifium
+
+    private int credits;
+    private Map<String, Boolean> available_terms;   //  { "autumn": true, "summer": true }
+    private List<String> prerequisite_courses;        // ["IFT1025"] (prérequis)
+    private List<String> concomitant_courses;         // []           (corequis)
+
+    //Ajouts  (commentez car pas dans API planifium)
     private String professeur;             // Professeur responsable du cours
-    private int credits;                   // Nombre de crédits
-    private String trimestre;              // Trimestre d'offre (ex : Hiver 2026)
     private String cycle;                  // Cycle d'études (ex : baccalauréat, maîtrise)
-    private List<String> prerequis;        // Prérequis (sigles des cours requis)
-    private List<String> corequis;         // Co-requis (sigles des cours à suivre en parallèle)
 
     public Course() {}
 
-    public Course(String id, String name, String desc, String professeur, int credits,
-                  String trimestre, String cycle, String[] prerequis, String[] corequis) {
+    public Course(String id, String name, String description, String professeur, int credits,
+                  Map<String, Boolean>  available_terms, List<String> prerequisite_courses, 
+                  List<String> concomitant_courses) {
         this.id = id;
         this.name = name;
-        this.description = desc;
+        this.description = description;
 
         //Ajouts 
-        this.professeur = professeur;
+        // this.professeur = professeur;
         this.credits = credits;
-        this.trimestre = trimestre;
-        this.cycle = cycle;
-        this.prerequis = prerequis;
-        this.corequis = corequis;
+        this.prerequisite_courses = prerequisite_courses;
+        this.concomitant_courses = concomitant_courses;
+        this.available_terms = available_terms;
+
+        this.professeur = null;
+        this.cycle = null;
     }
 
 
@@ -47,19 +55,19 @@ public class Course {
     public String getProfesseur() { return professeur; }
     public void setProfesseur(String professeur) { this.professeur = professeur; }
 
-    public int getCredits() { return credits; }
-    public void setCredits(int credits) { this.credits = credits; }
-
-    public String getTrimestre() { return trimestre; }
-    public void setTrimestre(String trimestre) { this.trimestre = trimestre; }
-
     public String getCycle() { return cycle; }
     public void setCycle(String cycle) { this.cycle = cycle; }
 
-    public String[] getPrerequis() { return prerequis; }
-    public void setPrerequis(String[] prerequis) { this.prerequis = prerequis; }
+    public int getCredits() { return credits; }
+    public void setCredits(int credits) { this.credits = credits; }
 
-    public String[] getCorequis() { return corequis; }
-    public void setCorequis(String[] corequis) { this.corequis = corequis; }
+    public Map<String, Boolean> getTerms() { return available_terms; }
+    public void setTerm(Map<String, Boolean> available_terms) { this.available_terms = available_terms; }
+
+    public List<String> getPrerequis() { return prerequisite_courses; }
+    public void setPrerequis(List<String> prerequisite_courses) { this.prerequisite_courses = prerequisite_courses; }
+
+    public List<String>  getCorequis() { return concomitant_courses; }
+    public void setCorequis(List<String> concomitant_courses) { this.concomitant_courses = concomitant_courses; }
     
 }

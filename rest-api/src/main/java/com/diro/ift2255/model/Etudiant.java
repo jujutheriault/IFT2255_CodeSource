@@ -9,8 +9,8 @@ public class Etudiant {
     private String programme;
     private int cycle;
     private LocalDateTime debutProgramme;
-    private Preferences preferences;
-    private sigle[] coursPasse;
+    private String[] preferences;               // On pourra faire une classe Preferences plus tard
+    private String[] coursPasse;                // On pourra faire une classe sigle plus tard
     private String[] filtres;
 
 
@@ -82,17 +82,17 @@ public class Etudiant {
 
     }
 
-    public Preferences getPreferences(){
+    public String[] getPreferences(){
 
         return preferences;
     }
 
-    public void setCoursPasse(sigle[] coursPasse){
+    public void setCoursPasse(String[] coursPasse){
 
         this.coursPasse = coursPasse;
     }
 
-    public sigle[] getcoursPasse(){
+    public String[] getcoursPasse(){
 
         return coursPasse;
     }
