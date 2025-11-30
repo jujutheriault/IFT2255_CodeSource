@@ -8,12 +8,20 @@ public class User {
     private String name;
     private String email;
 
+    // Ajouts
+    private String password;
+    private boolean estAuthentifie;
+    
+
     public User() {}
 
-    public User(int id, String name, String email) {
+    public User(int id, String name, String email,String password) {
         this.id = id;
         this.name = name;
         this.email = email;
+        // Ajouts
+        this.password = password;
+        this.estAuthentifie = false;
     }
 
     public int getId() { return id; }
@@ -24,4 +32,10 @@ public class User {
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+    
+    public boolean isEstAuthentifie() {return estAuthentifie; }
+    public void setEstAuthentifie(boolean estAuthentifie) { this.estAuthentifie = estAuthentifie; }
 }
