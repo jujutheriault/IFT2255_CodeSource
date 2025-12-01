@@ -25,7 +25,6 @@ class ComparaisonControllerTest {
     public void setUp() {
         controller = new ComparaisonController();
 
-        // ⚡ Les IDs correspondent maintenant aux attentes des tests
         c1 = new Course("C101", "Math");
         c1.setCredits(3); // définit les crédits
 
