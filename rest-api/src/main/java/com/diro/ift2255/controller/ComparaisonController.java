@@ -5,19 +5,20 @@ import com.diro.ift2255.model.TableauComparaison;
 
 public class ComparaisonController {
 
+    // Tableau contenant les cours sélectionnés pour comparaison
     private TableauComparaison tableau;
 
     public ComparaisonController() {
         this.tableau = new TableauComparaison();
     }
 
-    // --- 1) Ajouter un cours à la comparaison ---
+    // Ajoute un cours si non null
     public void selectionnerCoursComparer(Course cours) {
         if (cours == null) return;
         tableau.ajouterCours(cours);
     }
 
-    // --- 2) Retirer un cours de la comparaison ---
+    // Retire un cours par ID (décalage du tableau)
     public void deselectionnerCoursComparer(String courseId) {
         if (courseId == null) return;
 
@@ -26,39 +27,35 @@ public class ComparaisonController {
 
         for (int i = 0; i < taille; i++) {
             if (liste[i] != null && courseId.equals(liste[i].getId())) {
-
-                // Décalage vers la gauche pour supprimer l’élément
                 for (int j = i; j < taille - 1; j++) {
                     liste[j] = liste[j + 1];
                 }
-                liste[taille - 1] = null; // dernier élément devient null
+                liste[taille - 1] = null;
                 return;
             }
         }
     }
 
-    // --- 3) Comparer plusieurs cours en les ajoutant au tableau ---
+    // Ajoute plusieurs cours à la fois
     public void comparerCours(Course[] coursSelectionnes) {
         if (coursSelectionnes == null) return;
 
         for (Course c : coursSelectionnes) {
-            if (c != null) {
-                tableau.ajouterCours(c);
-            }
+            if (c != null) tableau.ajouterCours(c);
         }
     }
 
-    // --- 4) Calcul de la charge totale (somme des crédits) ---
+    // Retourne la somme des crédits
     public int calculerChargeTotale() {
         return tableau.calculChargeTotale();
     }
 
-    // --- 5) Réinitialiser le tableau de comparaison ---
+    // Réinitialise le tableau de comparaison
     public void reinitialiserSelection() {
-        tableau = new TableauComparaison(); // Remplacement direct
+        tableau = new TableauComparaison();
     }
 
-    // --- Getter pour la vue ---
+    // Retourne les cours sélectionnés
     public Course[] getCoursComparés() {
         return tableau.getCours();
     }

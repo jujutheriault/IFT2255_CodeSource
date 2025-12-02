@@ -1,66 +1,84 @@
 package com.diro.ift2255.controller;
 
 import com.diro.ift2255.model.Course;
-import com.diro.ift2255.model.TableauComparaison;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class ComparaisonControllerTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-    private TableauComparaison tableau;
+import org.junit.jupiter.api.BeforeAll;
 
-    public ComparaisonControllerTest() {
-        this.tableau = new TableauComparaison();
+class ComparaisonControllerTest {
+
+    private ComparaisonController controller;
+    private Course c1;
+    private Course c2;
+
+    @BeforeAll
+    static void printHeader() {
+        System.out.println("\n" + "=".repeat(80));
+        System.out.println("ComparaisonController Tests");
+        System.out.println("=".repeat(80));
     }
 
-    // --- 1) Ajouter un cours à la comparaison ---
-    public void selectionnerCoursComparer(Course cours) {
-        if (cours == null) return;
-        tableau.ajouterCours(cours);
+    @BeforeEach
+    public void setUp() {
+        controller = new ComparaisonController();
+
+        c1 = new Course("C101", "Math");
+        c1.setCredits(3); // définit les crédits
+
+        c2 = new Course("C102", "Physique");
+        c2.setCredits(4); // définit les crédits
     }
 
-    // --- 2) Retirer un cours de la comparaison ---
-    public void deselectionnerCoursComparer(String courseId) {
-        if (courseId == null) return;
+    @Test
+    void testSelectionnerCoursComparer() {
+        controller.selectionnerCoursComparer(c1);
+        Course[] cours = controller.getCoursComparés();
 
-        Course[] liste = tableau.getCours();
-        int taille = tableau.getTaille();
-
-        for (int i = 0; i < taille; i++) {
-            if (liste[i] != null && courseId.equals(liste[i].getId())) {
-
-                // Décalage vers la gauche pour supprimer l’élément
-                for (int j = i; j < taille - 1; j++) {
-                    liste[j] = liste[j + 1];
-                }
-                liste[taille - 1] = null; // dernier élément devient null
-                return;
-            }
-        }
+        assertEquals("C101", cours[0].getId());
+        assertEquals(3, cours[0].getCredits());
     }
 
-    // --- 3) Comparer plusieurs cours en les ajoutant au tableau ---
-    public void comparerCours(Course[] coursSelectionnes) {
-        if (coursSelectionnes == null) return;
+    @Test
+    void testDeselectionnerCoursComparer() {
+        controller.selectionnerCoursComparer(c1);
+        controller.selectionnerCoursComparer(c2);
 
-        for (Course c : coursSelectionnes) {
-            if (c != null) {
-                tableau.ajouterCours(c);
-            }
-        }
+        controller.deselectionnerCoursComparer("C101");
+        Course[] cours = controller.getCoursComparés();
+
+        // Après suppression de C101, C102 est à l'index 0 et l'index 1 est null
+        assertEquals("C102", cours[0].getId());
+        assertNull(cours[1]);
     }
 
-    // --- 4) Calcul de la charge totale (somme des crédits) ---
-    public int calculerChargeTotale() {
-        return tableau.calculChargeTotale();
+    @Test
+    void testComparerCours() {
+        Course[] selection = {c1, c2};
+        controller.comparerCours(selection);
+        Course[] cours = controller.getCoursComparés();
+
+        assertEquals("C101", cours[0].getId());
+        assertEquals("C102", cours[1].getId());
     }
 
-    // --- 5) Réinitialiser le tableau de comparaison ---
-    public void reinitialiserSelection() {
-        tableau = new TableauComparaison(); // Remplacement direct
+    @Test
+    void testCalculerChargeTotale() {
+        controller.selectionnerCoursComparer(c1);
+        controller.selectionnerCoursComparer(c2);
+
+        int total = controller.calculerChargeTotale();
+        assertEquals(7, total); // 3 + 4
     }
 
-    // --- Getter pour la vue ---
-    public Course[] getCoursComparés() {
-        return tableau.getCours();
+    @Test
+    void testReinitialiserSelection() {
+        controller.selectionnerCoursComparer(c1);
+        controller.reinitialiserSelection();
+
+        Course[] cours = controller.getCoursComparés();
+        assertNull(cours[0]);
     }
 }
-
