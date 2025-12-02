@@ -56,7 +56,7 @@ public class ComparaisonController {
     }
 
     // Retourne les cours sélectionnés
-    public Course[] getCoursComparés() {
+    public Course[] getCoursComparer() {
         return tableau.getCours();
     }
 }
