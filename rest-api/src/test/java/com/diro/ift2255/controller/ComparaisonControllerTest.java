@@ -3,11 +3,11 @@ package com.diro.ift2255.controller;
 import com.diro.ift2255.model.Course;
 import com.diro.ift2255.model.TableauComparaison;
 
-public class ComparaisonController {
+public class ComparaisonControllerTest {
 
     private TableauComparaison tableau;
 
-    public ComparaisonController() {
+    public ComparaisonControllerTest() {
         this.tableau = new TableauComparaison();
     }
 
