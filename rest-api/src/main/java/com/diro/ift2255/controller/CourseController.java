@@ -83,28 +83,9 @@ public class CourseController {
      */   
     public void searchCourses(Context ctx) {
         Map<String, String> queryParams = extractQueryParams(ctx);
+        // On va chercher les cours selon les paramètres puis on crée un objet RechercheCours
         List<Course> courses = service.getAllCourses(queryParams);
         RechercheCours recherche = new RechercheCours(courses);
-        ctx.json(courses);
-    }
-
-    public void filterSearch(Context ctx) {
-        Map<String, String> queryParams = extractQueryParams(ctx);
-        if (queryParams.containsKey("idPart")) {
-            String idPart = queryParams.get("idPart");
-            courses = recherche.filtrerIdPart(idPart);
-        }
-        if (queryParams.containsKey("credits")) {
-            int credits = Integer.parseInt(queryParams.get("credits"));
-            courses = recherche.filtrerNamePart(credits);
-        }
-        if (queryParams.containsKey("term")) {
-            String term = queryParams.get("term");
-            courses = recherche.filtrerTermAvailable(term);
-        }
-        if (queryParams.containsKey("chargeTravail")) {
-            int chargeTravail = Integer.parseInt(queryParams.get("chargeTravail"));
-            courses = recherche.filtrerChargeTravail(chargeTravail);
-        }
+        ctx.json(recherche);
     }
 }

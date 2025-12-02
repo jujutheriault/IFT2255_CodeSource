@@ -1,6 +1,7 @@
+package com.diro.ift2255.model;
+
 import com.diro.ift2255.model.Course;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.util.ArrayList;
 import java.util.List;
 

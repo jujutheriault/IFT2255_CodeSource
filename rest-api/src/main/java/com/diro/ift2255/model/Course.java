@@ -48,7 +48,7 @@ public class Course {
 
         this.professeur = null;
         this.cycle = null;
-        this.chargeTravail = null;
+        this.chargeTravail = 0;   // Si 0, crédit pas encore instancié
     }
 
     public String getId() { return id; }
