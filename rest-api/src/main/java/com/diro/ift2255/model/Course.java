@@ -18,9 +18,11 @@ public class Course {
     private List<String> prerequisite_courses;        // ["IFT1025"] (prérequis)
     private List<String> concomitant_courses;         // []           (corequis)
 
-    //Ajouts  (commentez car pas dans API planifium)
+    //Ajouts futurs
     private String professeur;             // Professeur responsable du cours
     private String cycle;                  // Cycle d'études (ex : baccalauréat, maîtrise)
+    private int chargeTravail;          // Charge de travail en heures
+
 
     public Course() {}
 
@@ -46,6 +48,7 @@ public class Course {
 
         this.professeur = null;
         this.cycle = null;
+        this.chargeTravail = 0;   // Si 0, crédit pas encore instancié
     }
 
     public String getId() { return id; }
@@ -75,5 +78,8 @@ public class Course {
 
     public List<String>  getCorequis() { return concomitant_courses; }
     public void setCorequis(List<String> concomitant_courses) { this.concomitant_courses = concomitant_courses; }
+
+    public int getChargeTravail() { return chargeTravail; }
+    public void setChargeTravail(int chargeTravail) { this.chargeTravail = chargeTravail; }
 }
 
