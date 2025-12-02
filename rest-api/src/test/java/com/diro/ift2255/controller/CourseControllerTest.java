@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.diro.ift2255.model.Course;
+import com.diro.ift2255.model.rechercheCours;
 import com.diro.ift2255.service.CourseService;
 
 import io.javalin.http.Context;

@@ -1,6 +1,7 @@
 package com.diro.ift2255.model;
 
 import com.diro.ift2255.model.Course;
+import com.diro.ift2255.model.Etudiant;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,21 +10,51 @@ import java.util.List;
 public class RechercheCours {
 
     private List<Course> listeCours;
+    private Etudiant etudiant;
 
      public RechercheCours() {}
 
     public RechercheCours(List<Course> listeCours) {
         this.listeCours = listeCours;
+        this.etudiant = null;
     }
 
     // --- Getter et Setter ---
-    public List<Course> listeCours() {
+    public List<Course> getListeCours() {
         return listeCours;
     }
 
-    public void setCours(List<Course> ListeCours) {
+    public void setListeCours(List<Course> listeCours) {
         this.listeCours = listeCours;
     }
+
+    public Etudiant getEtudiant() {
+        return etudiant;
+    }
+    public void setEtudiant(Etudiant etudiant) {
+        this.etudiant = etudiant;
+    }
+
+
+    // Personnaliser la rechercher
+
+    public List<Course> personnaliserRecherche(String programme) {
+
+        List<Course> coursPersonnalise = new ArrayList<>();
+
+        // On retourne si aucun etudiant n'est authentifié ou si le programme est vide
+        if (etudiant == null || programme == null || programme.isEmpty()) {
+            return listeCours; // Retourne la liste complète si l'étudiant ou le programme est nul
+        } 
+
+        for (Course cours : listeCours) {
+            if (cours.getDescription().contains(programme)) {
+                coursPersonnalise.add(cours);
+            }
+        }
+        return coursPersonnalise;
+    }
+
 
     // Filtrer une recherche par id
     public List<Course> filtrerIdPart(String idPart) {
@@ -37,7 +68,7 @@ public class RechercheCours {
     }
 
     // Filtrer une recherche par crédit
-    public List<Course> filtrerNamePart(int credits) {
+    public List<Course> filtrerCredit(int credits) {
         List<Course> filtre = new ArrayList<>();
         for (Course cours : listeCours) {
             if (cours.getCredits() == credits) {
