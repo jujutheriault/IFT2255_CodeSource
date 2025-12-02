@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.diro.ift2255.service.CourseServiceTest" time="0.046" tests="4" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.diro.ift2255.controller.ComparaisonControllerTest" time="0.026" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -7,7 +7,6 @@
     <property name="java.vm.vendor" value="Homebrew"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.vendor.url" value="https://github.com/Homebrew/homebrew-core/issues"/>
-    <property name="user.timezone" value="America/Toronto"/>
     <property name="os.name" value="Mac OS X"/>
     <property name="java.vm.specification.version" value="25"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
@@ -60,47 +59,15 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="69.0"/>
   </properties>
-  <testcase name="getAllCourses_returnListClientApi" classname="com.diro.ift2255.service.CourseServiceTest" time="0.036">
+  <testcase name="testDeselectionnerCoursComparer" classname="com.diro.ift2255.controller.ComparaisonControllerTest" time="0.01">
     <system-out><![CDATA[
 ================================================================================
-CourseService Tests
+ComparaisonController Tests
 ================================================================================
-
-TEST: getAllCourses should return a list from API.
-    ├─ Method: getAllCourses_returnListClientApi
-    ├─ Assertions:
-Calling Planifium API : https://planifium-api.onrender.com/api/v1/courses?course_id=IFT2255
-    │   └─ [PASS] Returned : 2 courses as expected.
-    └─ Duration: 17 ms
 ]]></system-out>
   </testcase>
-  <testcase name="getAllCourses_withNullParams_useEmptyMap" classname="com.diro.ift2255.service.CourseServiceTest" time="0.002">
-    <system-out><![CDATA[
-TEST: getAllCourses with Null parameters should use empty map and return an empty list.
-    ├─ Method: getAllCourses_withNullParams_useEmptyMap
-    ├─ Assertions:
-Calling Planifium API : https://planifium-api.onrender.com/api/v1/courses
-    │   └─ [PASS] Returned empty list as expected
-    └─ Duration: 1 ms
-]]></system-out>
-  </testcase>
-  <testcase name="getCourseById_ReturnCourseIfClientApiSucceed" classname="com.diro.ift2255.service.CourseServiceTest" time="0.002">
-    <system-out><![CDATA[
-TEST: getCourseById should return course if API succeeds.
-    ├─ Method: getCourseById_ReturnCourseIfClientApiSucceed
-    ├─ Assertions:
-    │   ├─ [PASS] Course found for id IFT-2255
-    │   └─ [PASS] Returned course matches expected mock
-    └─ Duration: 1 ms
-]]></system-out>
-  </testcase>
-  <testcase name="getCourseById_EmptyIfClientApiThrows" classname="com.diro.ift2255.service.CourseServiceTest" time="0.003">
-    <system-out><![CDATA[
-TEST: getCourseById should return empty if API throws.
-    ├─ Method: getCourseById_EmptyIfClientApiThrows
-    ├─ Assertions:
-    │   └─ [PASS] Empty optional returned as expected when API throws.
-    └─ Duration: 1 ms
-]]></system-out>
-  </testcase>
+  <testcase name="testCalculerChargeTotale" classname="com.diro.ift2255.controller.ComparaisonControllerTest" time="0.001"/>
+  <testcase name="testSelectionnerCoursComparer" classname="com.diro.ift2255.controller.ComparaisonControllerTest" time="0.001"/>
+  <testcase name="testReinitialiserSelection" classname="com.diro.ift2255.controller.ComparaisonControllerTest" time="0.001"/>
+  <testcase name="testComparerCours" classname="com.diro.ift2255.controller.ComparaisonControllerTest" time="0.0"/>
 </testsuite>
