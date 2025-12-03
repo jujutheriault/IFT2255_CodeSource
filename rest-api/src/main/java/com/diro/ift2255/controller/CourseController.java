@@ -2,6 +2,7 @@ package com.diro.ift2255.controller;
 
 import io.javalin.http.Context;
 import com.diro.ift2255.model.Course;
+import com.diro.ift2255.model.User;
 import com.diro.ift2255.model.RechercheCours;
 import com.diro.ift2255.service.CourseService;
 import com.diro.ift2255.util.ResponseUtil;
@@ -15,7 +16,15 @@ import java.util.Optional;
 public class CourseController {
     // Service qui contient la logique métier pour la manipulation des cours et la communication avec les services externes
     private final CourseService service;
+    private User utilisateur;
 
+
+    public void setUtilisateur(User user) {
+        this.utilisateur = user;
+    }
+    public User getUtilisateur() {
+        return this.utilisateur;
+    }
     public CourseController(CourseService service) {
         this.service = service;
     }
@@ -85,38 +94,9 @@ public class CourseController {
         Map<String, String> queryParams = extractQueryParams(ctx);
         // On va chercher les cours selon les paramètres puis on crée un objet RechercheCours
         List<Course> courses = service.getAllCourses(queryParams);
-        RechercheCours recherche = new RechercheCours(courses);
+        RechercheCours recherche = new RechercheCours(courses, utilisateur);
         courses = recherche.personnaliserRecherche();
         ctx.json(courses);
     }
-
-        /**
-     * Application d'un filtre après que la recherche soit faite si l'utilisateur le fait
-     * @param ctx Contexte Javalin représentant la requête et la réponse HTTP
-     */   
-    public void filterCourse(Context ctx, RechercheCours recherche) {
-        Map<String, String> queryParams = extractQueryParams(ctx);
-        List<Course> courses = recherche.getListeCours();
-
-        if (queryParams.containsKey("idPart")) {
-            String idPart = queryParams.get("idPart");
-            courses = recherche.filtrerIdPart(idPart);
-        }
-        if (queryParams.containsKey("credits")) {
-            int credits = Integer.parseInt(queryParams.get("credits"));
-            courses = recherche.filtrerCredit(credits);
-        }
-        if (queryParams.containsKey("termAvailable")) {
-            String term = queryParams.get("termAvailable");
-            courses = recherche.filtrerTermAvailable(term);
-        }
-        if (queryParams.containsKey("chargeTravail")) {
-            int chargeTravail = Integer.parseInt(queryParams.get("chargeTravail"));
-            courses = recherche.filtrerChargeTravail(chargeTravail);
-        }
-        ctx.json(courses);
-    }
-
-
 
 }
