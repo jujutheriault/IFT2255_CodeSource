@@ -94,6 +94,81 @@ public class UserServiceTest {
         }
     }
 
+    @Test
+    @DisplayName("Create user should add a new user with auto-incremented ID")
+    void testCreateUser() {
+        // ARRANGE
+        User newUser = new User(0, "Vincent", "vincent@exemple.com");
+
+        // ACT
+        userService.createUser(newUser);
+
+        // ASSERT
+        try {
+            List<User> users = userService.getAllUsers();
+            assertEquals(3, users.size(), "There should now be 3 users");
+            OK("User count is now 3", false);
+
+            assertTrue(users.stream().anyMatch(u -> u.getName().equals("Vincent")),
+                    "Created user should be present");
+            OK("Vincent was successfully added");
+        }   catch (AssertionError e) {
+            Err(e.getMessage());
+            throw e;
+        }
+    }
+
+    @Test
+    @DisplayName("Update user should replace existing user's data")
+    void testUpdateUser() {
+        //ARRANGE
+        User updated = new User(0,"VincentUpdated","newVincentemail@exemple.com");
+
+        //ACT
+        userService.updateUser(1,updated);
+
+        //ASSERT
+        try {
+            Optional<User> user = userService.getUserById(1);
+
+            assertTrue(user.isPresent(),"User should still exist");
+            OK("User 1 found",false);
+
+            assertEquals("VincentUpdated",user.get().getName());
+            OK("User name updated as expected");
+
+        } catch(AssertionError e){
+
+            Err(e.getMessage());
+            throw e;
+        }
+
+        }
+
+
+    @Test
+    @DisplayName("Delete user should remove user from the system")
+    void testDeleteUser() {
+        //ACT
+        userService.deleteUser(1);
+
+
+        //ASSERT
+        try {
+            Optional<User> user = userService.getUserById(1);
+
+            assertTrue(user.isEmpty(), "User 1 should be deleted");
+            OK("User 1 successfully deleted");
+        
+        } catch(AssertionError e){
+
+            Err(e.getMessage());
+            throw e;
+        }
+
+    }
+
+
     @AfterAll
     static void printFooter() {
         System.out.println("\n" + "=".repeat(80));
