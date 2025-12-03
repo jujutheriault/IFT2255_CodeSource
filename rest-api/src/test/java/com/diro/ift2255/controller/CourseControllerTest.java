@@ -12,6 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.diro.ift2255.model.Course;
 import com.diro.ift2255.model.RechercheCours;
+import com.diro.ift2255.model.Etudiant;
+import com.diro.ift2255.model.User;
 import com.diro.ift2255.service.CourseService;
 
 import io.javalin.http.Context;
@@ -249,6 +251,14 @@ public class CourseControllerTest {
                 new Course("IFT1025", "Programmation II"),
                 new Course("ESP3900", "Espagnol Intermédiaire")); 
 
+        RechercheCours mockRecherche = new RechercheCours();
+        Etudiant mockEtudiant = new Etudiant(12345, "Jean Dupont", "jean@hotmail.com");
+        mockEtudiant.setProgramme("IFT");
+
+
+        // On configure le contrôleur avec un utilisateur simulé
+        controller.setUtilisateur(mockEtudiant);
+
         when(mockContext.queryParamMap()).thenReturn(new HashMap<>());
         when(mockService.getAllCourses(any())).thenReturn(mockCourses);
 
@@ -259,22 +269,15 @@ public class CourseControllerTest {
         // ASSERT
         try {
             // On verifie que la réponse contient tous les cours
-            verify(mockContext).json(argThat(list ->
-                list instanceof List<?> &&
-                ((List<?>) list).size() == mockCourses.size()
-            ));
-            OK("Response returned with all courses when no query parameters", false);
+            verify(mockContext).json(argThat(courses -> 
+                courses instanceof List &&
+                ((List<?>) courses).size() == 2));
+            OK("All courses returned when no query parameters");
         } catch (AssertionError e) {
             Err(e.getMessage());
             throw e;
         }
     }
-
-    /**************************************************************************
-     * Tests for filterCourse method
-     *************************************************************************/
-
-
 
     @AfterAll
     static void printFooter() {
