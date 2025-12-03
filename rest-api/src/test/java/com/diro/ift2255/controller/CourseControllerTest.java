@@ -241,6 +241,7 @@ public class CourseControllerTest {
      * Tests for searchCourse method
      *************************************************************************/
 
+    // Test pour user identifié comme étudiant
     @Test
     @DisplayName("SearchCourses with student user should filter courses by program")
     void testSearchCoursesStudent() {
@@ -279,6 +280,7 @@ public class CourseControllerTest {
         }
     }
 
+    // Test pour user qui n'est pas un étudiant sans query params
     @Test
     @DisplayName("SearchCourses with normal user should return all courses")
     void testSearchCoursesNormalUser() {
@@ -309,6 +311,46 @@ public class CourseControllerTest {
                 courses instanceof List &&
                 ((List<?>) courses).size() == 3));
             OK("Only courses matching student's program returned");
+        } catch (AssertionError e) {
+            Err(e.getMessage());
+            throw e;
+        }
+    }
+
+    // Test pour user qui n'est pas un étudiant avec query params
+    @Test
+    @DisplayName("SearchCourses with normal user and query params should return only matching courses")
+    void testSearchAllCoursesWithQueryParameters() {
+        // ARRANGE
+        Map<String, List<String>> queryParamMap = new HashMap<>();
+        queryParamMap.put("id", Arrays.asList("ESP"));
+
+        List<Course> mockCourses = Arrays.asList(
+                new Course("IFT1015", "Programmation I"),
+                new Course("IFT1025", "Programmation II"),
+                new Course("ESP3900", "Espagnol Intermédiaire"));
+
+        RechercheCours mockRecherche = new RechercheCours();
+        User mockUser = new User(12345, "Jean Dupont", "jean@hotmail.com");
+
+        // On configure le contrôleur avec un utilisateur simulé
+        controller.setUtilisateur(mockUser);
+
+        when(mockContext.queryParamMap()).thenReturn(queryParamMap);
+        when(mockService.getAllCourses(any())).thenReturn(mockCourses);
+
+        // ACT
+        controller.searchCourses(mockContext);
+
+        // ASSERT
+        try {
+            verify(mockService).getAllCourses(argThat(params -> 
+                    params.containsKey("id") &&
+                    params.get("id").contains("ESP")));
+            OK("Service called with correct query parameters", false);
+
+            verify(mockContext).json(mockCourses);
+            OK("Response returned successfully");
         } catch (AssertionError e) {
             Err(e.getMessage());
             throw e;

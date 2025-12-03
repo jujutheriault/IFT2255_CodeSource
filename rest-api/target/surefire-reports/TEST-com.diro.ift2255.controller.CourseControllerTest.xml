@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.diro.ift2255.controller.CourseControllerTest" time="0.305" tests="8" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.diro.ift2255.controller.CourseControllerTest" time="0.333" tests="9" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="java.vm.specification.version" value="21"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-21-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/alixloungnarath/ift2255/IFT2255_Devoir2/rest-api/target/surefire/surefirebooter-20251202212756073_3.jar /home/alixloungnarath/ift2255/IFT2255_Devoir2/rest-api/target/surefire 2025-12-02T21-27-56_010-jvmRun1 surefire-20251202212756073_1tmp surefire_0-20251202212756073_2tmp"/>
+    <property name="sun.java.command" value="/home/alixloungnarath/ift2255/IFT2255_Devoir2/rest-api/target/surefire/surefirebooter-20251202214104605_3.jar /home/alixloungnarath/ift2255/IFT2255_Devoir2/rest-api/target/surefire 2025-12-02T21-41-04_537-jvmRun1 surefire-20251202214104605_1tmp surefire_0-20251202214104605_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/alixloungnarath/ift2255/IFT2255_Devoir2/rest-api/target/test-classes:/home/alixloungnarath/ift2255/IFT2255_Devoir2/rest-api/target/classes:/home/alixloungnarath/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.17.2/jackson-databind-2.17.2.jar:/home/alixloungnarath/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.17.2/jackson-annotations-2.17.2.jar:/home/alixloungnarath/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.17.2/jackson-core-2.17.2.jar:/home/alixloungnarath/.m2/repository/io/javalin/javalin/6.7.0/javalin-6.7.0.jar:/home/alixloungnarath/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar:/home/alixloungnarath/.m2/repository/org/eclipse/jetty/jetty-server/11.0.25/jetty-server-11.0.25.jar:/home/alixloungnarath/.m2/repository/org/eclipse/jetty/jetty-http/11.0.25/jetty-http-11.0.25.jar:/home/alixloungnarath/.m2/repository/org/eclipse/jetty/jetty-util/11.0.25/jetty-util-11.0.25.jar:/home/alixloungnarath/.m2/repository/org/eclipse/jetty/jetty-io/11.0.25/jetty-io-11.0.25.jar:/home/alixloungnarath/.m2/repository/org/eclipse/jetty/toolchain/jetty-jakarta-servlet-api/5.0.2/jetty-jakarta-servlet-api-5.0.2.jar:/home/alixloungnarath/.m2/repository/org/eclipse/jetty/websocket/websocket-jetty-server/11.0.25/websocket-jetty-server-11.0.25.jar:/home/alixloungnarath/.m2/repository/org/eclipse/jetty/jetty-servlet/11.0.25/jetty-servlet-11.0.25.jar:/home/alixloungnarath/.m2/repository/org/eclipse/jetty/jetty-security/11.0.25/jetty-security-11.0.25.jar:/home/alixloungnarath/.m2/repository/org/eclipse/jetty/jetty-webapp/11.0.25/jetty-webapp-11.0.25.jar:/home/alixloungnarath/.m2/repository/org/eclipse/jetty/jetty-xml/11.0.25/jetty-xml-11.0.25.jar:/home/alixloungnarath/.m2/repository/org/eclipse/jetty/websocket/websocket-jetty-api/11.0.25/websocket-jetty-api-11.0.25.jar:/home/alixloungnarath/.m2/repository/org/eclipse/jetty/websocket/websocket-jetty-common/11.0.25/websocket-jetty-common-11.0.25.jar:/home/alixloungnarath/.m2/repository/org/eclipse/jetty/websocket/websocket-core-common/11.0.25/websocket-core-common-11.0.25.jar:/home/alixloungnarath/.m2/repository/org/eclipse/jetty/websocket/websocket-servlet/11.0.25/websocket-servlet-11.0.25.jar:/home/alixloungnarath/.m2/repository/org/eclipse/jetty/websocket/websocket-core-server/11.0.25/websocket-core-server-11.0.25.jar:/home/alixloungnarath/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.9.25/kotlin-stdlib-jdk8-1.9.25.jar:/home/alixloungnarath/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib/1.9.25/kotlin-stdlib-1.9.25.jar:/home/alixloungnarath/.m2/repository/org/jetbrains/annotations/13.0/annotations-13.0.jar:/home/alixloungnarath/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.9.25/kotlin-stdlib-jdk7-1.9.25.jar:/home/alixloungnarath/.m2/repository/org/slf4j/slf4j-simple/2.0.16/slf4j-simple-2.0.16.jar:/home/alixloungnarath/.m2/repository/org/junit/jupiter/junit-jupiter/5.10.2/junit-jupiter-5.10.2.jar:/home/alixloungnarath/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.2/junit-jupiter-api-5.10.2.jar:/home/alixloungnarath/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/alixloungnarath/.m2/repository/org/junit/platform/junit-platform-commons/1.10.2/junit-platform-commons-1.10.2.jar:/home/alixloungnarath/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/alixloungnarath/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.2/junit-jupiter-params-5.10.2.jar:/home/alixloungnarath/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.2/junit-jupiter-engine-5.10.2.jar:/home/alixloungnarath/.m2/repository/org/junit/platform/junit-platform-engine/1.10.2/junit-platform-engine-1.10.2.jar:/home/alixloungnarath/.m2/repository/org/mockito/mockito-core/5.18.0/mockito-core-5.18.0.jar:/home/alixloungnarath/.m2/repository/net/bytebuddy/byte-buddy/1.17.5/byte-buddy-1.17.5.jar:/home/alixloungnarath/.m2/repository/net/bytebuddy/byte-buddy-agent/1.17.5/byte-buddy-agent-1.17.5.jar:/home/alixloungnarath/.m2/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:/home/alixloungnarath/.m2/repository/org/mockito/mockito-junit-jupiter/5.18.0/mockito-junit-jupiter-5.18.0.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -27,7 +27,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/home/alixloungnarath/ift2255/IFT2255_Devoir2/rest-api/target/surefire/surefirebooter-20251202212756073_3.jar"/>
+    <property name="surefire.real.class.path" value="/home/alixloungnarath/ift2255/IFT2255_Devoir2/rest-api/target/surefire/surefirebooter-20251202214104605_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="21.0.9+10-Ubuntu-124.04"/>
     <property name="user.name" value="alixloungnarath"/>
@@ -53,7 +53,7 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testSearchCoursesNormalUser" classname="com.diro.ift2255.controller.CourseControllerTest" time="0.252">
+  <testcase name="testSearchCoursesNormalUser" classname="com.diro.ift2255.controller.CourseControllerTest" time="0.266">
     <system-out><![CDATA[
 ================================================================================
 CourseController Tests
@@ -63,10 +63,10 @@ TEST: SearchCourses with normal user should return all courses
     ├─ Method: testSearchCoursesNormalUser
     ├─ Assertions:
     │   └─ [PASS] Only courses matching student's program returned
-    └─ Duration: 10 ms
+    └─ Duration: 12 ms
 ]]></system-out>
   </testcase>
-  <testcase name="testGetAllCoursesWithQueryParameters" classname="com.diro.ift2255.controller.CourseControllerTest" time="0.005">
+  <testcase name="testGetAllCoursesWithQueryParameters" classname="com.diro.ift2255.controller.CourseControllerTest" time="0.007">
     <system-out><![CDATA[
 TEST: Get all courses should pass query parameters to service
     ├─ Method: testGetAllCoursesWithQueryParameters
@@ -76,7 +76,17 @@ TEST: Get all courses should pass query parameters to service
     └─ Duration: 2 ms
 ]]></system-out>
   </testcase>
-  <testcase name="testGetCourseByIdWhenCourseNotFound" classname="com.diro.ift2255.controller.CourseControllerTest" time="0.01">
+  <testcase name="testSearchAllCoursesWithQueryParameters" classname="com.diro.ift2255.controller.CourseControllerTest" time="0.008">
+    <system-out><![CDATA[
+TEST: SearchCourses with normal user and query params should return only matching courses
+    ├─ Method: testSearchAllCoursesWithQueryParameters
+    ├─ Assertions:
+    │   ├─ [PASS] Service called with correct query parameters
+    │   └─ [PASS] Response returned successfully
+    └─ Duration: 4 ms
+]]></system-out>
+  </testcase>
+  <testcase name="testGetCourseByIdWhenCourseNotFound" classname="com.diro.ift2255.controller.CourseControllerTest" time="0.007">
     <system-out><![CDATA[
 TEST: Get course by ID should return 404 when course not found
     ├─ Method: testGetCourseByIdWhenCourseNotFound
@@ -84,10 +94,10 @@ TEST: Get course by ID should return 404 when course not found
     │   ├─ [PASS] Service called with ID: IFT1234
     │   ├─ [PASS] Status 404 set
     │   └─ [PASS] Error message returned
-    └─ Duration: 6 ms
+    └─ Duration: 4 ms
 ]]></system-out>
   </testcase>
-  <testcase name="testGetAllCoursesWithoutQueryParams" classname="com.diro.ift2255.controller.CourseControllerTest" time="0.005">
+  <testcase name="testGetAllCoursesWithoutQueryParams" classname="com.diro.ift2255.controller.CourseControllerTest" time="0.006">
     <system-out><![CDATA[
 TEST: Get all courses should return all courses when no query parameters
     ├─ Method: testGetAllCoursesWithoutQueryParams
@@ -95,7 +105,7 @@ TEST: Get all courses should return all courses when no query parameters
     │   ├─ [PASS] Query params extracted from context
     │   ├─ [PASS] Service called with query params
     │   └─ [PASS] Response returned with 2 courses
-    └─ Duration: 2 ms
+    └─ Duration: 3 ms
 ]]></system-out>
   </testcase>
   <testcase name="testGetCourseByIdWhenIdIsEmpty" classname="com.diro.ift2255.controller.CourseControllerTest" time="0.004">
@@ -105,7 +115,7 @@ TEST: Get course by ID should return 400 when ID is empty string
     ├─ Assertions:
     │   ├─ [PASS] Status 400 set for empty ID
     │   └─ [PASS] Service was not called
-    └─ Duration: 1 ms
+    └─ Duration: 2 ms
 ]]></system-out>
   </testcase>
   <testcase name="testSearchCoursesStudent" classname="com.diro.ift2255.controller.CourseControllerTest" time="0.006">
@@ -114,10 +124,10 @@ TEST: SearchCourses with student user should filter courses by program
     ├─ Method: testSearchCoursesStudent
     ├─ Assertions:
     │   └─ [PASS] Only courses matching student's program returned
-    └─ Duration: 4 ms
+    └─ Duration: 3 ms
 ]]></system-out>
   </testcase>
-  <testcase name="testGetCourseByIdWhenIdExists" classname="com.diro.ift2255.controller.CourseControllerTest" time="0.008">
+  <testcase name="testGetCourseByIdWhenIdExists" classname="com.diro.ift2255.controller.CourseControllerTest" time="0.006">
     <system-out><![CDATA[
 TEST: Get course by ID should return course when ID exists
     ├─ Method: testGetCourseByIdWhenIdExists
@@ -126,10 +136,10 @@ TEST: Get course by ID should return course when ID exists
     │   ├─ [PASS] Service called with ID: IFT2255
     │   ├─ [PASS] Course returned successfully
     │   └─ [PASS] No error status set
-    └─ Duration: 6 ms
+    └─ Duration: 2 ms
 ]]></system-out>
   </testcase>
-  <testcase name="testGetCourseByIdWhenIdIsNull" classname="com.diro.ift2255.controller.CourseControllerTest" time="0.004">
+  <testcase name="testGetCourseByIdWhenIdIsNull" classname="com.diro.ift2255.controller.CourseControllerTest" time="0.005">
     <system-out><![CDATA[
 TEST: Get course by ID should return 400 when ID is null
     ├─ Method: testGetCourseByIdWhenIdIsNull
@@ -137,7 +147,7 @@ TEST: Get course by ID should return 400 when ID is null
     │   ├─ [PASS] Status 400 set
     │   ├─ [PASS] Error message returned
     │   └─ [PASS] Service was not called
-    └─ Duration: 2 ms
+    └─ Duration: 3 ms
 ]]></system-out>
   </testcase>
 </testsuite>
