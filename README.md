@@ -60,3 +60,38 @@ Ce template suit principalement le modèle MVC :
 - Centralisez les routes dans `config/Routes.java` pour simplifier l’ajout de nouveaux endpoints.
 - Ajoutez des **tests unitaires** pour chaque méthode de service.
 - Conservez un style de code uniforme (respect du standard Java).
+
+## Instructions d'installation
+
+
+1. **Cloner le dépôt**
+   ```bash
+   git clone https://github.com/jujutheriault/IFT2255_Devoir2.git
+   cd rest-api
+
+2. **Vérifier l'installation de Maven et Java**
+   ```bash
+   java -version
+   mvn -version
+   
+- Si ce n'est pas installé, installez-le selon les instruction d'installation
+
+3. ***Installer les dépendances de maven***
+    ```bash
+    mvn clean install
+
+
+## Instructions d'exécution et de test
+1. **Pour démarrer le serveur Javalin:**
+    ```bash
+    mvn clean compile
+
+2. **Les tests** 
+- Ce projet inclut des test unitaires utilisant **JUnit 5** et **Mockito**.
+- Ces test se trouvent dans les fichiers **controller/ComparaisonControllerTest.java**, **controller/CourseControllerTest.java**,
+**service/CourseServiceTest.java** et **service/UserServiceTest.java**. Ces fichiers se trouvent dans le dossier **test/java/com/diro/ift2255**
+
+3. **Pour exécuter les tests**
+    ```bash
+    mvn clean test
+
