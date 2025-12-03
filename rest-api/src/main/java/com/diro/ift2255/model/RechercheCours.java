@@ -2,6 +2,7 @@ package com.diro.ift2255.model;
 
 import com.diro.ift2255.model.Course;
 import com.diro.ift2255.model.Etudiant;
+import com.diro.ift2255.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +11,13 @@ import java.util.List;
 public class RechercheCours {
 
     private List<Course> listeCours;
-    private Etudiant etudiant;
+    private User user;
 
      public RechercheCours() {}
 
-    public RechercheCours(List<Course> listeCours) {
+    public RechercheCours(List<Course> listeCours, User user) {
         this.listeCours = listeCours;
-        this.etudiant = null;
+        this.user = user;
     }
 
     // --- Getter et Setter ---
@@ -28,11 +29,11 @@ public class RechercheCours {
         this.listeCours = listeCours;
     }
 
-    public Etudiant getEtudiant() {
-        return etudiant;
+    public User getUser() {
+        return user;
     }
-    public void setEtudiant(Etudiant etudiant) {
-        this.etudiant = etudiant;
+    public void setUser(User user) {
+        this.user = user;
     }
 
 
@@ -42,18 +43,20 @@ public class RechercheCours {
 
         List<Course> coursPersonnalise = new ArrayList<>();
 
-        // On retourne si aucun etudiant n'est authentifié ou si le programme est vide
-        if (etudiant == null) {
-            return listeCours; // Retourne la liste complète si l'étudiant ou le programme est nul
-        } 
+        // On retourne si aucun user n'est pas un étudiant
+        if (!(user instanceof Etudiant etudiant)) {
+            return listeCours;
+        }
+
+        // Retourne la liste complète si l'étudiant ou le programme est nul
         if (etudiant.getProgramme() == null) {
-            return listeCours; // Retourne la liste complète si l'étudiant ou le programme est nul
-        } 
-        
+            return listeCours;
+        }
+
         String programme = etudiant.getProgramme();
 
         for (Course cours : listeCours) {
-            if (cours.getDescription().contains(programme)) {
+            if (cours.getId().contains(programme)) {
                 coursPersonnalise.add(cours);
             }
         }
