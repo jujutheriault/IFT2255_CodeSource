@@ -32,6 +32,5 @@ public class Routes {
 
         app.get("/courses", courseController::getAllCourses);
         app.get("/courses/{id}", courseController::getCourseById);
-        app.get("/courses/search", courseController::searchCourses);
     }
 }

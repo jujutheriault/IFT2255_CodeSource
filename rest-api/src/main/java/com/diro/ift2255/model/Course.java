@@ -8,7 +8,7 @@ import java.util.Map;
 public class Course {
     private String id;
     private String name;
-    private String description;
+    private String description = null;
 
 
     // Ajouts basés sur le retour de l'API planifium

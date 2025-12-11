@@ -16,14 +16,14 @@ import java.util.Optional;
 public class CourseController {
     // Service qui contient la logique métier pour la manipulation des cours et la communication avec les services externes
     private final CourseService service;
-    private User utilisateur;
+    private User user = null;
 
 
-    public void setUtilisateur(User user) {
-        this.utilisateur = user;
+    public void setUser(User user) {
+        this.user = user;
     }
-    public User getUtilisateur() {
-        return this.utilisateur;
+    public User getUser() {
+        return this.user;
     }
     public CourseController(CourseService service) {
         this.service = service;
@@ -90,13 +90,25 @@ public class CourseController {
      * Recherche des cours en fonction des paramètres de requête.
      * @param ctx Contexte Javalin représentant la requête et la réponse HTTP
      */   
+
     public void searchCourses(Context ctx) {
+
         Map<String, String> queryParams = extractQueryParams(ctx);
+
         // On va chercher les cours selon les paramètres puis on crée un objet RechercheCours
         List<Course> courses = service.getAllCourses(queryParams);
-        RechercheCours recherche = new RechercheCours(courses, utilisateur);
-        courses = recherche.personnaliserRecherche();
-        ctx.json(courses);
-    }
+        RechercheCours recherche = new RechercheCours(courses, user);
+
+        String motRecherche = ctx.pathParam("recherche");
+
+        List<Course> searchResult = recherche.rechercher(motRecherche);
+
+        if (!searchResult.isEmpty()) {
+            ctx.json(searchResult);
+        } else {
+            ctx.status(404).json(ResponseUtil.formatError("Aucun résultat trouvé pour la recherche" + motRecherche));
+        }
+
+    }  
 
 }

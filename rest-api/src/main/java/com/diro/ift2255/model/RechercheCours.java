@@ -13,7 +13,7 @@ public class RechercheCours {
     private List<Course> listeCours;
     private User user;
 
-     public RechercheCours() {}
+    public RechercheCours() {}
 
     public RechercheCours(List<Course> listeCours, User user) {
         this.listeCours = listeCours;
@@ -36,10 +36,32 @@ public class RechercheCours {
         this.user = user;
     }
 
+    // Recherche de cours parsigle partiel, ou mot-clé
+    public List<Course> rechercher(String motRecherche){
+
+        // Si le mot de recherche est vide, on retourne la liste complète
+        if (motRecherche == null || motRecherche.isEmpty()) {
+            return listeCours;
+        }
+                
+        List<Course> resultat = new ArrayList<>();
+
+        for (Course cours : listeCours) {
+            if (
+                (cours.getId() != null) && cours.getId().toLowerCase().contains(motRecherche.toLowerCase())
+                || (cours.getName() != null) && cours.getName() != null && cours.getName().toLowerCase().contains(motRecherche.toLowerCase())
+                || ((cours.getDescription() != null) && cours.getDescription() != null && cours.getDescription().toLowerCase().contains(motRecherche.toLowerCase()))
+            ) {
+                resultat.add(cours);
+            }
+        }
+        return resultat;
+    }
+
 
     // Personnaliser la rechercher
 
-    public List<Course> personnaliserRecherche() {
+    /* public List<Course> personnaliserRecherche() {
 
         List<Course> coursPersonnalise = new ArrayList<>();
 
@@ -49,7 +71,7 @@ public class RechercheCours {
         }
 
         // Retourne la liste complète si l'étudiant ou le programme est nul
-        if (etudiant.getProgramme() == null) {
+        if (etudiant.getProgramme == null) {
             return listeCours;
         }
 
@@ -61,7 +83,7 @@ public class RechercheCours {
             }
         }
         return coursPersonnalise;
-    }
+    } */
 
 
     // Filtrer une recherche par id
