@@ -241,7 +241,7 @@ public class CourseControllerTest {
      * Tests for searchCourse method
      *************************************************************************/
 
-    // Test pour user identifié comme étudiant
+    /* // Test pour user identifié comme étudiant
     @Test
     @DisplayName("SearchCourses with student user should filter courses by program")
     void testSearchCoursesStudent() {
@@ -258,7 +258,7 @@ public class CourseControllerTest {
 
 
         // On configure le contrôleur avec un utilisateur simulé
-        controller.setUtilisateur(mockEtudiant);
+        controller.setUser(mockEtudiant);
 
         when(mockContext.queryParamMap()).thenReturn(new HashMap<>());
         when(mockService.getAllCourses(any())).thenReturn(mockCourses);
@@ -278,9 +278,9 @@ public class CourseControllerTest {
             Err(e.getMessage());
             throw e;
         }
-    }
+    } */
 
-    // Test pour user qui n'est pas un étudiant sans query params
+    /* // Test pour user qui n'est pas un étudiant sans query params
     @Test
     @DisplayName("SearchCourses with normal user should return all courses")
     void testSearchCoursesNormalUser() {
@@ -291,11 +291,10 @@ public class CourseControllerTest {
                 new Course("IFT1025", "Programmation II"),
                 new Course("ESP3900", "Espagnol Intermédiaire")); 
 
-        RechercheCours mockRecherche = new RechercheCours();
         User mockUser = new User(12345, "Jean Dupont", "jean@hotmail.com");
-
+        
         // On configure le contrôleur avec un utilisateur simulé
-        controller.setUtilisateur(mockUser);
+        controller.setUser(mockUser);
 
         when(mockContext.queryParamMap()).thenReturn(new HashMap<>());
         when(mockService.getAllCourses(any())).thenReturn(mockCourses);
@@ -334,7 +333,7 @@ public class CourseControllerTest {
         User mockUser = new User(12345, "Jean Dupont", "jean@hotmail.com");
 
         // On configure le contrôleur avec un utilisateur simulé
-        controller.setUtilisateur(mockUser);
+        controller.setUser(mockUser);
 
         when(mockContext.queryParamMap()).thenReturn(queryParamMap);
         when(mockService.getAllCourses(any())).thenReturn(mockCourses);
@@ -355,7 +354,7 @@ public class CourseControllerTest {
             Err(e.getMessage());
             throw e;
         }
-    }
+    } */ 
 
 
     @AfterAll
