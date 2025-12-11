@@ -7,6 +7,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./rest-api/                     # definir le repertoire de travail pour les commandes run
+
     strategy:
       matrix:
         java-version: [ '17' ]
