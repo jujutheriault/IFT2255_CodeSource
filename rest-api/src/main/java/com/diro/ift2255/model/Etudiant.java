@@ -2,19 +2,22 @@ package com.diro.ift2255.model;
 
 import java.time.LocalDateTime;
 
-public class Etudiant {
+public class Etudiant extends User {
     private int matricule;
     private String prenom;
     private String nom;
     private String programme;
     private int cycle;
     private LocalDateTime debutProgramme;
+    private String password;
 
     private String[] preferences;               // On pourra faire une classe Preferences plus tard
     private String[] coursPasse;                // On pourra faire une classe sigle plus tard
     private String[] filtres;
 
-    public Etudiant() {}
+    public Etudiant(int id, String name, String email) {
+        super(id, name, email);
+    }
 
     // Getters / Setters
     public void setMatricule(int matricule){
@@ -74,7 +77,7 @@ public class Etudiant {
         this.coursPasse = coursPasse;
     }
 
-    public String[] getcoursPasse(){
+    public String[] getCoursPasse(){
         return coursPasse;
     }
 

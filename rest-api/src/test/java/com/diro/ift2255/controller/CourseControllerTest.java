@@ -11,6 +11,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.diro.ift2255.model.Course;
+import com.diro.ift2255.model.RechercheCours;
+import com.diro.ift2255.model.Etudiant;
+import com.diro.ift2255.model.User;
 import com.diro.ift2255.service.CourseService;
 
 import io.javalin.http.Context;
@@ -238,74 +241,125 @@ public class CourseControllerTest {
      * Tests for searchCourse method
      *************************************************************************/
 
+    /// Test pour recherche vide
     @Test
-    @DisplayName("SearchCourses should return all courses when no query parameters")
-    void testSearchCoursesWithoutQueryParams() {
+    @DisplayName("Empty search should return all courses matching student's program")
+    void testEmptySearch() {
         // ARRANGE
+        // Base de données simulées
         List<Course> mockCourses = Arrays.asList(
                 new Course("IFT1015", "Programmation I"),
                 new Course("IFT1025", "Programmation II"),
                 new Course("ESP3900", "Espagnol Intermédiaire")); 
 
+        RechercheCours mockRecherche = new RechercheCours();
+        Etudiant mockEtudiant = new Etudiant(12345, "Jean Dupont", "jean@hotmail.com");
+
+        // On crée une recherche avec un mot vide
+        String motRechercheTest = "";
+
+        // On configure le contrôleur avec un utilisateur simulé
+        controller.setUser(mockEtudiant);
+
         when(mockContext.queryParamMap()).thenReturn(new HashMap<>());
+        when(mockContext.pathParam("recherche")).thenReturn(motRechercheTest);
         when(mockService.getAllCourses(any())).thenReturn(mockCourses);
 
         // ACT
-        controller.getAllCourses(mockContext);
-
-        // ASSERT
-        try {
-            verify(mockContext).queryParamMap();
-            OK("Query params extracted from context", false);   
-
-            verify(mockContext).json(mockCourses);
-            OK("Response returned with " + mockCourses.size() + " courses");
-        } catch (AssertionError e) {
-            Err(e.getMessage());
-            throw e;
-        }
-    }
-
-
-    @Test
-    @DisplayName("Search courses should return filtered courses based on query params")
-    void testSearchCoursesIDPart() {
-        // ARRANGE
-        Map<String, List<String>> queryParamMap = new HashMap<>();
-        queryParamMap.put("id", Arrays.asList("IFT"));
-
-        List<Course> mockCourses = Arrays.asList(
-                new Course("IFT2255", "Génie logiciel"),
-                new Course("IFT1025", "Programmation II"),
-                new Course("ECON1000", "Macroéconomie")
-        );
-
-        List<Course> expectedFilteredCourses = Arrays.asList(
-            new Course("IFT2255", "Génie logiciel"),
-            new Course("IFT1025", "Programmation II")
-        );
-
-        when(mockContext.queryParamMap()).thenReturn(queryParamMap);
-        when(mockService.getAllCourses(any())).thenReturn(expectedFilteredCourses);
-
-
-        // ACT
+        // On appelle searchCourses sans paramètres de requête
         controller.searchCourses(mockContext);
 
         // ASSERT
         try {
-        verify(mockContext).json(argThat(result ->
-            result instanceof List<?> &&
-            ((List<?>) result).size() == 2
-        ));
+            // On verifie que la réponse contient tous les cours
+            verify(mockContext).json(argThat(courses -> 
+                courses instanceof List &&
+                ((List<?>) courses).size() == 3));
+            OK("Every course returned for empty search");
+        } catch (AssertionError e) {
+            Err(e.getMessage());
+            throw e;
+        }
+    } 
+
+    // Test pour recherche avec mot-clé invalide
+    @Test
+    @DisplayName("Invalid seache searh should return error message")
+    void testInvalidSearch() {
+        // ARRANGE
+        // Base de données simulées
+        List<Course> mockCourses = Arrays.asList(
+                new Course("IFT1015", "Programmation I"),
+                new Course("IFT1025", "Programmation II"),
+                new Course("ESP3900", "Espagnol Intermédiaire")); 
+
+        RechercheCours mockRecherche = new RechercheCours();
+        Etudiant mockEtudiant = new Etudiant(12345, "Jean Dupont", "jean@hotmail.com");
+
+        // On crée une recherche avec un mot vide
+        String motRechercheTest = "cours inexistant";
+
+        // On configure le contrôleur avec un utilisateur simulé
+        controller.setUser(mockEtudiant);
+
+        when(mockContext.queryParamMap()).thenReturn(new HashMap<>());
+        when(mockContext.pathParam("recherche")).thenReturn(motRechercheTest);
+        when(mockService.getAllCourses(any())).thenReturn(mockCourses);
+        when(mockContext.status(anyInt())).thenReturn(mockContext);
+
+        // ACT
+        // On appelle searchCourses sans paramètres de requête
+        controller.searchCourses(mockContext);
+
+        // ASSERT
+        try {
+            verify(mockContext).status(404);
+            OK("Test failed successfully, received 404 with error message.");
+        } catch (AssertionError e) {
+            Err(e.getMessage());
+            throw e;
+        }
+    } 
+
+    // Test pour une recherche normale (succès)
+    @Test
+    @DisplayName("SearchCourses with normal search term should return matching courses")
+    void testSearchNormalTerms() {
+        // ARRANGE
+        // Base de données simulées
+        List<Course> mockCourses = Arrays.asList(
+                new Course("IFT1015", "Programmation I"),
+                new Course("IFT1025", "Programmation II"),
+                new Course("ESP3900", "Espagnol Intermédiaire")); 
+
+        User mockUser = new User(12345, "Jean Dupont", "jean@hotmail.com");
+        // On crée une recherche avec mot-clé
+        String motRechercheTest = "Programmation";
         
-        OK("Response returned with filtered courses", false);
-    
+        // On configure le contrôleur avec un utilisateur simulé
+        controller.setUser(mockUser);
+
+        when(mockContext.queryParamMap()).thenReturn(new HashMap<>());
+        when(mockService.getAllCourses(any())).thenReturn(mockCourses);
+        when(mockContext.pathParam("recherche")).thenReturn(motRechercheTest);
+
+        // ACT
+        // On appelle searchCourses sans paramètres de requête
+        controller.searchCourses(mockContext);
+
+        // ASSERT
+        try {
+            // On verifie que la réponse contient tous les cours
+            verify(mockContext).json(argThat(courses -> 
+                courses instanceof List &&
+                ((List<?>) courses).size() == 2));
+            OK("Only courses matching search returned");
         } catch (AssertionError e) {
             Err(e.getMessage());
             throw e;
         }
     }
+
 
     @AfterAll
     static void printFooter() {

@@ -63,7 +63,7 @@ public class CourseServiceTest {
 
     @Test
     @DisplayName("getAllCourses should return a list from API.")
-    void getAllCourses_returnListClientApi() {
+    void getAllCourses_returnList() {
 
         Map<String, String> params = Map.of("course_id", "IFT2255");
 
@@ -95,7 +95,7 @@ public class CourseServiceTest {
 
     @Test
     @DisplayName("getAllCourses with Null parameters should use empty map and return an empty list. ")
-    void getAllCourses_withNullParams_useEmptyMap () {
+    void getAllCourses_withNullParams () {
 
         // ARRANGE
         List<Course> expected = Collections.emptyList();
@@ -122,7 +122,7 @@ public class CourseServiceTest {
 
     @Test
     @DisplayName("getCourseById should return course if API succeeds.")
-    void getCourseById_ReturnCourseIfClientApiSucceed() {
+    void getCourseById_ReturnCourse() {
 
         // ARRANGE
         Course expected = mock(Course.class);
@@ -153,7 +153,7 @@ public class CourseServiceTest {
 
     @Test
     @DisplayName("getCourseById should return empty if API throws.")
-    void getCourseById_EmptyIfClientApiThrows() {
+    void getCourseById_Empty() {
 
         // ARRANGE
         when(clientApi.get(
