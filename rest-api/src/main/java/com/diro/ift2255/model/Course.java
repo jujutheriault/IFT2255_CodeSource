@@ -37,7 +37,7 @@ public class Course {
     public void setName(String name) { this.name = name; }
     /**
      * Getter pour la description du cours
-     * @return
+     * @return la description du cours
      */
     public String getDescription() { return description; }
     /** 

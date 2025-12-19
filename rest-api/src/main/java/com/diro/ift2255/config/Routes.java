@@ -15,12 +15,18 @@ import io.javalin.Javalin;
  * 
  */
 public class Routes {
-
+    /**
+     * Enregistre les routes de l'application Javalin
+     * @param app l'application Javalin
+     */
     public static void register(Javalin app) {
         registerUserRoutes(app);
         registerCourseRoutes(app);
     }
-
+    /**
+     * Enrtegistre les routes des utilisateurs
+     * @param app l'application Javalin
+     */
     private static void registerUserRoutes(Javalin app) {
         UserService userService = new UserService();
         UserController userController = new UserController(userService);
@@ -31,7 +37,10 @@ public class Routes {
         app.put("/users/{id}", userController::updateUser);
         app.delete("/users/{id}", userController::deleteUser);
     }
-
+    /**
+     * Enregistre les routes pour les cours
+     * @param app l'application Javalin
+     */
     private static void registerCourseRoutes(Javalin app) {
         CourseService courseService = new CourseService(new HttpClientApi());
         CourseController courseController = new CourseController(courseService);

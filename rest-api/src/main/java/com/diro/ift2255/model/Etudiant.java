@@ -43,7 +43,7 @@ public class Etudiant {
     /**
      * 
      * Getter pour le prenom de l'utilisateur
-     * @return prenom  le prenom de l'utilisateur
+     * @return le prenom de l'utilisateur
      */
     public String getPrenom(){
 
@@ -59,7 +59,7 @@ public class Etudiant {
     }
     /**
      * Getter pour le nom de l'utilisateur
-     * @return nom le nom de l'utilisateur
+     * @return le nom de l'utilisateur
      */
     public String getNom(){
 
@@ -76,7 +76,7 @@ public class Etudiant {
     /**
      * 
      * Getter pour le programme choisi
-     * @return programme le programme choisi
+     * @return le programme choisi
      */
     public String getProgramme(){
 
@@ -92,7 +92,7 @@ public class Etudiant {
     }
     /**
      * Getter pour le cycle d'étude choisi
-     * @return cycle le cycle d'étude choisi
+     * @return le cycle d'étude choisi
      */
     public int getCycle(){
 
@@ -108,7 +108,7 @@ public class Etudiant {
     }
     /**
      * Getter pour la date du debut de programme choisi
-     * @return debutProgramme la date de debut du programme choisi
+     * @return la date de debut du programme choisi
      */
     public LocalDateTime getDebutProgramme(){
 
@@ -125,7 +125,7 @@ public class Etudiant {
     }
     /**
      *Getter pour les preferences choisies par l'utilisateur 
-     * @return preferences les preferences choisies par l'utilisateur
+     * @return les preferences choisies par l'utilisateur
      */
     public Preferences getPreferences(){
 
@@ -141,7 +141,7 @@ public class Etudiant {
     }
     /**
      * Getter pour les cours passes par l'utilisateur
-     * @return coursPasse les cours passes par l'utilisateur
+     * @return les cours passes par l'utilisateur
      */
     public sigle[] getcoursPasse(){
 
@@ -158,7 +158,7 @@ public class Etudiant {
     }
     /**
      * Getter pour les filtres
-     * @return filtres les filtres choisis par l'utilisateur
+     * @return les filtres choisis par l'utilisateur
      */
     public String[] getFiltres(){
 
