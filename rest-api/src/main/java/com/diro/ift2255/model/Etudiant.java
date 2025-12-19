@@ -33,28 +33,40 @@ public class Etudiant extends User {
     public String getPrenom(){
         return prenom;
     }
-
+    /**
+     * Setter pour le nom de l'utilisateur
+     * @param nom le nom de l'utilisateur
+     */
     public void setNom(String nom){
         this.nom = nom;
     }
     public String getNom(){
         return nom;
     }
-
+    /**
+     * Setter pour le programme choisi
+     * @param programme
+     */
     public void setProgramme(String programme){
         this.programme = programme;
     }
     public String getProgramme(){
         return programme;
     }
-
+    /**
+     * Setter pour le cycle d'étude choisi
+     * @param cycle le cycle d'étude choisi
+     */
     public void setCycle(int cycle){
         this.cycle = cycle;
     }
     public int getCycle(){
         return cycle;
     }
-
+    /**
+     * Setter pour la date de debut du programme choisi
+     * @param debutProgramme la date de debut du programme choisi
+     */
     public void setDebutProgramme(LocalDateTime debutProgramme){
         this.debutProgramme = debutProgramme;
     }
