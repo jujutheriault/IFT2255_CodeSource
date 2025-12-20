@@ -27,8 +27,9 @@ public class Routes {
     }
 
     private static void registerCourseRoutes(Javalin app) {
+        UserService userService = new UserService();
         CourseService courseService = new CourseService(new HttpClientApi());
-        CourseController courseController = new CourseController(courseService);
+        CourseController courseController = new CourseController(courseService, userService); // ✅ MODIFIÉ ICI
 
         app.get("/courses", courseController::getAllCourses);
         app.get("/courses/{id}", courseController::getCourseById);

@@ -5,6 +5,7 @@ import com.diro.ift2255.model.Course;
 import com.diro.ift2255.model.User;
 import com.diro.ift2255.model.RechercheCours;
 import com.diro.ift2255.service.CourseService;
+import com.diro.ift2255.service.UserService;
 import com.diro.ift2255.util.ResponseUtil;
 
 import java.util.HashMap;
@@ -12,38 +13,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-
 public class CourseController {
-    // Service qui contient la logique métier pour la manipulation des cours et la communication avec les services externes
+
     private final CourseService service;
+    private final UserService userService; // ajouter pour l'éligibilité
     private User user = null;
 
+    public CourseController(CourseService service, UserService userService) {
+        this.service = service;
+        this.userService = userService;
+    }
 
     public void setUser(User user) {
         this.user = user;
     }
+
     public User getUser() {
         return this.user;
     }
-    public CourseController(CourseService service) {
-        this.service = service;
-    }
 
-    /**
-     * Récupère la liste de tous les cours.
-     * @param ctx Contexte Javalin représentant la requête et la réponse HTTP
-     */
+    // ==================== Javalin routes ====================
     public void getAllCourses(Context ctx) {
         Map<String, String> queryParams = extractQueryParams(ctx);
-
         List<Course> courses = service.getAllCourses(queryParams);
         ctx.json(courses);
     }
 
-    /**
-     * Récupère un cours spécifique par son ID.
-     * @param ctx Contexte Javalin représentant la requête et la réponse HTTP
-     */
     public void getCourseById(Context ctx) {
         String id = ctx.pathParam("id");
 
@@ -60,55 +55,61 @@ public class CourseController {
         }
     }
 
-    /**
-     * Vérifie que l'ID du cours est bien formé
-     * @param courseId L'ID du cours à valider
-     * @return Valeur booléeene indiquant si l'ID est valide
-     */
-    private boolean validateCourseId(String courseId) {
-        return courseId != null && courseId.trim().length() >= 6;
-    }
-
-    /**
-     * Récupère tous les paramètres de requête depuis l'URL et les met dans une Map
-     * @param ctx Contexte Javalin représentant la requête HTTP
-     * @return Map contenant les paramètres de requête et leurs valeurs
-     */
-    private Map<String, String> extractQueryParams(Context ctx) {
-        Map<String, String> queryParams = new HashMap<>();
-
-        ctx.queryParamMap().forEach((key, values) -> {
-            if (!values.isEmpty()) {
-                queryParams.put(key, values.get(0));
-            }
-        });
-
-        return queryParams;
-    }
-
-    /**
-     * Recherche des cours en fonction des paramètres de requête.
-     * @param ctx Contexte Javalin représentant la requête et la réponse HTTP
-     */   
-
     public void searchCourses(Context ctx) {
-
         Map<String, String> queryParams = extractQueryParams(ctx);
-
-        // On va chercher les cours selon les paramètres puis on crée un objet RechercheCours
         List<Course> courses = service.getAllCourses(queryParams);
         RechercheCours recherche = new RechercheCours(courses, user);
 
         String motRecherche = ctx.pathParam("recherche");
-
         List<Course> searchResult = recherche.rechercher(motRecherche);
 
         if (!searchResult.isEmpty()) {
             ctx.json(searchResult);
         } else {
-            ctx.status(404).json(ResponseUtil.formatError("Aucun résultat trouvé pour la recherche" + motRecherche));
+            ctx.status(404).json(ResponseUtil.formatError("Aucun résultat trouvé pour la recherche " + motRecherche));
         }
+    }
 
-    }  
+    private boolean validateCourseId(String courseId) {
+        return courseId != null && courseId.trim().length() >= 6;
+    }
+
+    private Map<String, String> extractQueryParams(Context ctx) {
+        Map<String, String> queryParams = new HashMap<>();
+        ctx.queryParamMap().forEach((key, values) -> {
+            if (!values.isEmpty()) {
+                queryParams.put(key, values.get(0));
+            }
+        });
+        return queryParams;
+    }
+
+    // ==================== Méthodes CLI ====================
+    public void getAllCoursesConsole() {
+        List<Course> courses = service.getAllCourses(null);
+        System.out.println("=== Liste des cours ===");
+        for (Course c : courses) {
+            System.out.println(c.getId() + " - " + c.getName());
+        }
+    }
+
+    public List<Course> searchCoursesConsole(String keyword) {
+        List<Course> courses = service.getAllCourses(null);
+        return courses.stream()
+                .filter(c -> c.getId().toLowerCase().contains(keyword.toLowerCase()) ||
+                             c.getName().toLowerCase().contains(keyword.toLowerCase()))
+                .toList();
+    }
+
+    public Optional<Course> getCourseByIdConsole(String courseId) {
+        return service.getCourseById(courseId);
+    }
+
+    // Vérifie si un utilisateur est éligible à un cours
+    public boolean isUserEligibleForCourse(int userId, String courseId) {
+        boolean userExists = userService.getUserById(userId).isPresent();
+        boolean courseExists = getCourseByIdConsole(courseId).isPresent();
+        return userExists && courseExists;
+    }
 
 }
