@@ -3,6 +3,7 @@ package com.diro.ift2255;
 import io.javalin.Javalin;
 
 import com.diro.ift2255.config.Routes;
+import com.diro.ift2255.Cli;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,6 +18,11 @@ public class Main {
 
         // Démarre le serveur sur le port 7070 (choix arbitraire)
         app.start(7070);
+
+        // Démarrage du CLI pour intéraction utilisateur
+        Cli cli = new Cli("http://localhost:7070");
+        new Thread(cli::start).start();
+
         System.out.println("Serveur démarré sur http://localhost:7070");
     }
 }
