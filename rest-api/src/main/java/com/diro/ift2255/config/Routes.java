@@ -2,12 +2,18 @@ package com.diro.ift2255.config;
 
 import com.diro.ift2255.controller.CourseController;
 import com.diro.ift2255.controller.UserController;
-import com.diro.ift2255.service.UserService;
 import com.diro.ift2255.service.CourseService;
+import com.diro.ift2255.service.UserService;
 import com.diro.ift2255.util.HttpClientApi;
 
 import io.javalin.Javalin;
-
+/*
+ * 
+ * Classe qui gère les routes de l'API REST
+ * 
+ * 
+ * 
+ */
 public class Routes {
 
     public static void register(Javalin app) {
