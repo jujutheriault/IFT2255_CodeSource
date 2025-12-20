@@ -21,6 +21,9 @@ public class User {
         this.id = id;
         this.name = name;
         this.email = email;
+        // Ajouts
+        this.password = null;
+        this.estAuthentifie = false;
     }
     /**
      * Getter pour l'identifiant de l'utilisateur
@@ -52,4 +55,10 @@ public class User {
      * @param email le nouveau courriel de l'utilisateur
      */
     public void setEmail(String email) { this.email = email; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public boolean isEstAuthentifie() { return estAuthentifie; }
+    public void setEstAuthentifie(boolean estAuthentifie) { this.estAuthentifie = estAuthentifie; }
 }

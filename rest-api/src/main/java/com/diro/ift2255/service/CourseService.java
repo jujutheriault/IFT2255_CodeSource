@@ -22,9 +22,9 @@ public class CourseService {
         Map<String, String> params = (queryParams == null) ? Collections.emptyMap() : queryParams;
 
         URI uri = HttpClientApi.buildUri(BASE_URL, params);
-        List<Course> courses = clientApi.get(uri, new TypeReference<List<Course>>() {});
+        System.out.println("Calling Planifium API : " + uri);
 
-        return courses;
+        return clientApi.get(uri, new TypeReference<List<Course>>() {});
     }
 
     /** recupere un cours par son ID
