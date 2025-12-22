@@ -1,7 +1,10 @@
 package com.diro.ift2255.model;
 
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -10,59 +13,32 @@ public class RechercheCours {
 
     private List<Course> listeCours;
     private User user;
-    /**
-     * Constructeur de recherche de cours par defaut
-     */
+
     public RechercheCours() {}
-    /**
-     * Constructeur de recherche de cours avec parametres
-     * @param listeCours la liste de cours
-     * @param user l'utilisateur effectuant la recherche
-     */
+
     public RechercheCours(List<Course> listeCours, User user) {
         this.listeCours = listeCours;
         this.user = user;
     }
 
-    // --- Getter et Setter ---
-    /**
-     * Getter pour la liste de cours
-     * @return la liste de cours
-     */
     public List<Course> getListeCours() {
         return listeCours;
     }
-    /**
-     * Setter pour la liste de cours
-     * @param listeCours la liste de cours modifiee
-     */
+
     public void setListeCours(List<Course> listeCours) {
         this.listeCours = listeCours;
     }
-    /**
-     * Getter pour l'utilisateur
-     * @return l'utilisateur  pour la recherche de cours
-     */
+
     public User getUser() {
         return user;
     }
-    /**
-     * Setter pour l'utilisatuer
-     * @param user l"utilisateur pour la recherche de cours modifie
-     */
+
     public void setUser(User user) {
         this.user = user;
     }
 
-    // Recherche de cours parsigle partiel, ou mot-clé
-    /**
-     * recher de cours par mots-cles
-     * @param motRecherche mot utilise pour la recherche
-     * @return la liste des cours correspondant aux parametres de recherche
-     */
+    // Recherche par mot-clé
     public List<Course> rechercher(String motRecherche){
-
-        // Si le mot de recherche est vide, on retourne la liste complète
         if (motRecherche == null || motRecherche.isEmpty()) {
             return listeCours;
         }
@@ -72,8 +48,8 @@ public class RechercheCours {
         for (Course cours : listeCours) {
             if (
                 (cours.getId() != null) && cours.getId().toLowerCase().contains(motRecherche.toLowerCase())
-                || (cours.getName() != null) && cours.getName() != null && cours.getName().toLowerCase().contains(motRecherche.toLowerCase())
-                || ((cours.getDescription() != null) && cours.getDescription() != null && cours.getDescription().toLowerCase().contains(motRecherche.toLowerCase()))
+                || (cours.getName() != null) && cours.getName().toLowerCase().contains(motRecherche.toLowerCase())
+                || ((cours.getDescription() != null) && cours.getDescription().toLowerCase().contains(motRecherche.toLowerCase()))
             ) {
                 resultat.add(cours);
             }
@@ -81,40 +57,7 @@ public class RechercheCours {
         return resultat;
     }
 
-
-    // Personnaliser la rechercher
-
-    /* public List<Course> personnaliserRecherche() {
-
-        List<Course> coursPersonnalise = new ArrayList<>();
-
-        // On retourne si aucun user n'est pas un étudiant
-        if (!(user instanceof Etudiant etudiant)) {
-            return listeCours;
-        }
-
-        // Retourne la liste complète si l'étudiant ou le programme est nul
-        if (etudiant.getProgramme == null) {
-            return listeCours;
-        }
-
-        String programme = etudiant.getProgramme();
-
-        for (Course cours : listeCours) {
-            if (cours.getId().contains(programme)) {
-                coursPersonnalise.add(cours);
-            }
-        }
-        return coursPersonnalise;
-    } */
-
-
-    // Filtrer une recherche par id
-    /**
-     * Filtrage d'une recherche par identification 
-     * @param idPart l'identification d'un cours
-     * @return liste des cours filtree par identification
-     */
+    // Filtrer par ID partiel
     public List<Course> filtrerIdPart(String idPart) {
         List<Course> filtre = new ArrayList<>();
         for (Course cours : listeCours) {
@@ -125,12 +68,7 @@ public class RechercheCours {
         return filtre;
     }
 
-    // Filtrer une recherche par crédit
-    /**
-     * filtrage d'un cours par credits
-     * @param credits le nombre de credits d'un cours
-     * @return liste de cours avec les credits choisis
-     */
+    // Filtrer par crédits
     public List<Course> filtrerCredit(int credits) {
         List<Course> filtre = new ArrayList<>();
         for (Course cours : listeCours) {
@@ -141,12 +79,7 @@ public class RechercheCours {
         return filtre;
     }
 
-    // Filtrer une recherche par terme disponible
-    /**
-     * filtrage d'un cours par les termes de recherche
-     * @param term termes de recherche
-     * @return liste des cours correspôndants aux termes de la recherche
-     */
+    // Filtrer par terme disponible
     public List<Course> filtrerTermAvailable(String term) {
         List<Course> filtre = new ArrayList<>();
         for (Course cours : listeCours) {
@@ -157,12 +90,7 @@ public class RechercheCours {
         return filtre;
     }
 
-    // Filtrer une recherche par charge de travail
-    /**
-     * filtrage d'un cours par la charge de travail
-     * @param chargeTravail la de travail d'un cours en heures
-     * @return liste des cours correspondants a la charge de travail entree
-     */
+    // Filtrer par charge de travail
     public List<Course> filtrerChargeTravail(int chargeTravail) {
         List<Course> filtre = new ArrayList<>();
 
@@ -174,4 +102,63 @@ public class RechercheCours {
         return filtre;
     }
 
+    public List<Course> filtrerParTrimestre(String trimestre) {
+    List<Course> filtre = new ArrayList<>();
+    
+    if (trimestre == null || trimestre.isEmpty()) {
+        return listeCours;
+    }
+
+    String session = convertirTrimestreEnSession(trimestre);
+    
+    System.out.println("DEBUG: trimestre = " + trimestre);
+    System.out.println("DEBUG: session convertie = " + session);
+    System.out.println("DEBUG: Nombre total de cours dans listeCours = " + listeCours.size()); // ✅ AJOUTE
+    
+    if (session == null) {
+        System.out.println("DEBUG: session est null!");
+        return filtre;
+    }
+
+    int count = 0;
+    for (Course cours : listeCours) {
+        if (count < 3) { // ✅ Afficher les 3 premiers cours peu importe
+            System.out.println("DEBUG: Cours " + cours.getId() + " - terms = " + cours.getTerms());
+            count++;
+        }
+        
+        if (cours.getTerms() != null) {
+            Boolean isAvailable = cours.getTerms().get(session);
+            
+            if (Boolean.TRUE.equals(isAvailable)) {
+                filtre.add(cours);
+            }
+        }
+    }
+    
+    System.out.println("DEBUG: Nombre de cours trouvés = " + filtre.size());
+    return filtre;
+}
+
+
+    // ✅ MÉTHODE MISE À JOUR : Convertir format trimestre (ignore l'année)
+private String convertirTrimestreEnSession(String trimestre) {
+    if (trimestre == null || trimestre.isEmpty()) {
+        return null;
+    }
+
+    // Prendre juste la première lettre
+    char saison = trimestre.toUpperCase().charAt(0);
+    
+    switch (saison) {
+        case 'H': // Hiver
+            return "winter";
+        case 'A': // Automne
+            return "autumn";
+        case 'E': // Été
+            return "summer";
+        default:
+            return null;
+    }
+}
 }

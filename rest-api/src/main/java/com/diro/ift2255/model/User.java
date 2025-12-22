@@ -9,6 +9,7 @@ public class User {
     private String email;
     private String password;
     private boolean estAuthentifie;
+    private int cycle;
     /**
      * Constructeur par defaut d'un utilisateur
      */
@@ -26,6 +27,7 @@ public class User {
         // Ajouts
         this.password = null;
         this.estAuthentifie = false;
+        this.cycle = 1; // ✅ Par défaut : Baccalauréat
     }
 
     // Getters / Setters
@@ -79,4 +81,6 @@ public class User {
      * @param estAuthentifie l'etat de l'authentification est modifiee
      */
     public void setEstAuthentifie(boolean estAuthentifie) { this.estAuthentifie = estAuthentifie; }
+    public int getCycle() { return cycle; }
+    public void setCycle(int cycle) { this.cycle = cycle; }
 }

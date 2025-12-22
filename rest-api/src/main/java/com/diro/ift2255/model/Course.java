@@ -128,7 +128,7 @@ public class Course {
      * Setter pour les termes disponibles dans la recherche de cours
      * @param available_terms liste de termes modifiee
      */
-    public void setTerm(Map<String, Boolean> available_terms) { this.available_terms = available_terms; }
+    public void setAvailable_terms(Map<String, Boolean> available_terms) { this.available_terms = available_terms; }
     /**
      * Getter pour les prerequis pour un cours
      * @return

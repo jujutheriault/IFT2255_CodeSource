@@ -8,10 +8,12 @@ import aiohttp  # NEW
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
+print(f"DEBUG: Token = {TOKEN[:20] if TOKEN else 'NONE'}...")
 GUILD_ID = os.getenv("GUILD_ID")
 
 
 OPINION_API_URL = os.getenv("OPINION_API_URL")      # URL API
+AVIS_JSON_PATH = os.getenv("AVIS_JSON_PATH", "../rest-api/src/main/java/com/diro/ift2255/data/avis_etudiants.json")
 
 TARGET_CHANNEL_IDS = set()
 
@@ -122,6 +124,93 @@ async def post_opinion_to_api(record: dict):
         print("[OPINION API] Exception while posting opinion:", e)
 
 ############################################################################# 
+
+def append_avis_to_json(sigle: str, auteur: str, note: int, commentaire: str):
+    """Ajoute un avis au fichier JSON"""
+    date = datetime.datetime.now().strftime("%Y-%m-%d")
+    
+    # Créer le dossier si nécessaire
+    pathlib.Path(AVIS_JSON_PATH).parent.mkdir(parents=True, exist_ok=True)
+    
+    # Lire les avis existants
+    if pathlib.Path(AVIS_JSON_PATH).exists():
+        with open(AVIS_JSON_PATH, "r", encoding="utf-8") as f:
+            avis_list = json.load(f)
+    else:
+        avis_list = []
+    
+    # Ajouter le nouvel avis
+    nouvel_avis = {
+        "sigle": sigle,
+        "auteur": auteur,
+        "note": note,
+        "commentaire": commentaire,
+        "date": date
+    }
+    avis_list.append(nouvel_avis)
+    
+    # Écrire dans le fichier
+    with open(AVIS_JSON_PATH, "w", encoding="utf-8") as f:
+        json.dump(avis_list, f, ensure_ascii=False, indent=2)
+    
+    print(f"✅ Avis ajouté: {sigle} - {auteur} - {note}/5")
+
+@bot.command(name="avis")
+async def avis_command(ctx, sigle: str = None, note: str = None, *, commentaire: str = None):
+    """Commande pour poster un avis sur un cours"""
+    
+    if not sigle or not note or not commentaire:
+        await ctx.send(
+            "❌ **Format invalide!**\n"
+            "Usage: `!avis [SIGLE] [NOTE] [Commentaire]`\n"
+            "Exemple: `!avis IFT2255 5 Excellent cours!`"
+        )
+        return
+    
+    # Valider le sigle
+    if not re.match(r"^[A-Z]{3}\d{4}$", sigle.upper()):
+        await ctx.send(f"❌ **Sigle invalide:** `{sigle}` (Format: IFT2255)")
+        return
+    
+    # Valider la note
+    try:
+        note_int = int(note)
+        if note_int < 1 or note_int > 5:
+            raise ValueError
+    except ValueError:
+        await ctx.send(f"❌ **Note invalide:** `{note}` (entre 1 et 5)")
+        return
+    
+    # Valider le commentaire
+    if len(commentaire) < 10:
+        await ctx.send("❌ **Commentaire trop court** (min 10 caractères)")
+        return
+    
+    auteur = ctx.author.name
+    
+    try:
+        append_avis_to_json(sigle.upper(), auteur, note_int, commentaire)
+        
+        stars = "⭐" * note_int
+        await ctx.send(
+            f"✅ **Avis enregistré!**\n\n"
+            f"📚 Cours: `{sigle.upper()}`\n"
+            f"{stars} Note: **{note_int}/5**\n"
+            f"💬 {commentaire}\n"
+            f"👤 Par: {auteur}"
+        )
+        
+    except Exception as e:
+        await ctx.send(f"❌ **Erreur:** {e}")
+        print(f"[ERROR] Erreur lors de l'ajout d'avis: {e}")
+
+
+
+
+
+
+
+
 
 @bot.event
 async def on_message(message: discord.Message):

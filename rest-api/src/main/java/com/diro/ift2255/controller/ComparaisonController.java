@@ -2,10 +2,10 @@ package com.diro.ift2255.controller;
 
 import com.diro.ift2255.model.Course;
 import com.diro.ift2255.model.TableauComparaison;
+import java.util.*;
 
 public class ComparaisonController {
 
-    // Tableau contenant les cours sélectionnés pour comparaison
     private TableauComparaison tableau;
 
     public ComparaisonController() {
@@ -59,5 +59,43 @@ public class ComparaisonController {
     public Course[] getCoursComparer() {
         return tableau.getCours();
     }
-}
 
+    // ✅ NOUVELLE MÉTHODE : Génère un résultat de comparaison structuré
+    public Map<String, Object> genererComparaison() {
+        Map<String, Object> result = new HashMap<>();
+        
+        Course[] coursListe = tableau.getCours();
+        int taille = tableau.getTaille();
+        
+        List<Map<String, Object>> comparaison = new ArrayList<>();
+        
+        for (int i = 0; i < taille; i++) {
+            if (coursListe[i] != null) {
+                comparaison.add(formatCourseForComparison(coursListe[i]));
+            }
+        }
+        
+        result.put("courses", comparaison);
+        result.put("totalCredits", calculerChargeTotale());
+        result.put("count", taille);
+        
+        return result;
+    }
+
+    // Formate un cours pour la comparaison
+    private Map<String, Object> formatCourseForComparison(Course c) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("id", c.getId());
+        data.put("name", c.getName());
+        data.put("credits", c.getCredits());
+        data.put("description", c.getDescription() != null ? c.getDescription() : "N/A");
+        data.put("prerequisite_courses", c.getPrerequis() != null ? c.getPrerequis() : new ArrayList<>());
+        data.put("concomitant_courses", c.getCorequis() != null ? c.getCorequis() : new ArrayList<>());
+        data.put("available_terms", c.getTerms() != null ? c.getTerms() : new HashMap<>());
+        return data;
+    }
+
+    public int getTaille() {
+        return tableau.getTaille();
+    }
+}

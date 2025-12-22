@@ -1,0 +1,33 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< com.diro.ift2255:rest-api >----------------------
+[INFO] Building rest-api 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- exec:3.6.2:java (default-cli) @ rest-api ---
+
+===== CLI Menu =====
+1. Lister tous les utilisateurs
+2. Lister tous les cours
+3. Rechercher un cours par sigle ou mot-clé
+4. Vérifier l'éligibilité d'un utilisateur à un cours
+5. Comparer des cours
+6. Voir les détails d'un cours
+7. Afficher l'horaire d'un étudiant
+8. Lister les cours par trimestre
+9. Quitter
+Choix : Option invalide, réessayez.
+
+===== CLI Menu =====
+1. Lister tous les utilisateurs
+2. Lister tous les cours
+3. Rechercher un cours par sigle ou mot-clé
+4. Vérifier l'éligibilité d'un utilisateur à un cours
+5. Comparer des cours
+6. Voir les détails d'un cours
+7. Afficher l'horaire d'un étudiant
+8. Lister les cours par trimestre
+9. Quitter
+Choix : [WARNING] 
+java.util.NoSuchElementException: No line found

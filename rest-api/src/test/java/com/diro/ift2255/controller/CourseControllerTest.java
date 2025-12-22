@@ -15,6 +15,7 @@ import com.diro.ift2255.model.RechercheCours;
 import com.diro.ift2255.model.Etudiant;
 import com.diro.ift2255.model.User;
 import com.diro.ift2255.service.CourseService;
+import com.diro.ift2255.service.UserService;
 
 import io.javalin.http.Context;
 
@@ -23,6 +24,9 @@ public class CourseControllerTest {
 
     @Mock // ← Crée un FAUX CourseService
     private CourseService mockService;
+
+    @Mock // ✅ AJOUT : Crée un FAUX UserService
+    private UserService mockUserService;
 
     @Mock // ← Crée un FAUX Context Javalin
     private Context mockContext;
@@ -40,8 +44,8 @@ public class CourseControllerTest {
 
     @BeforeEach
     void setup(TestInfo testInfo) {
-        // On injecte les FAUX objets dans le VRAI contrôleur
-        controller = new CourseController(mockService);
+        // ✅ MODIFIÉ : On injecte les DEUX FAUX objets dans le VRAI contrôleur
+        controller = new CourseController(mockService, mockUserService);
         testStartTime = System.currentTimeMillis();
 
         System.out.println("\nTEST: " + testInfo.getDisplayName());
@@ -386,8 +390,6 @@ public class CourseControllerTest {
         printMessage(message, false, true);
     }
 
-    private void Err(String message, boolean isLast) {
-        printMessage(message, false, isLast);
-    }
+    //private void Err(String message, boolean isLast) { printMessage(message, false, isLast);}
 
 }
