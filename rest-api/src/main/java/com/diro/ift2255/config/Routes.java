@@ -1,6 +1,7 @@
 package com.diro.ift2255.config;
 
 import com.diro.ift2255.controller.CourseController;
+import com.diro.ift2255.controller.EnsembleController;
 import com.diro.ift2255.controller.UserController;
 import com.diro.ift2255.controller.ComparaisonController;
 import com.diro.ift2255.controller.ProgramController;
@@ -21,6 +22,7 @@ public class Routes {
         registerCourseRoutes(app);
         registerComparisonRoutes(app);
         registerProgramRoutes(app); // ✅ AJOUT
+        createEnsembleRoutes(app);
     }
 
     private static void registerUserRoutes(Javalin app) {
@@ -84,5 +86,18 @@ public class Routes {
         ProgramController programController = new ProgramController(programService);
 
         app.get("/programs/{id}", programController::getProgramById);
+        app.get("/courses/search/{recherche}", courseController::searchCourses); 
+        // http://localhost:7070/courses/search/IFT?courses_sigle=ift1015,ift1025,esp1900  utilisation url
+        // http://localhost:7070/courses/search/java
+    }
+
+    private static void createEnsembleRoutes(Javalin app){
+        EnsembleController ensembleController = new EnsembleController();
+
+
+        app.get("/ensemble/create/{idEnsemble}", ensembleController::createEnsemble);
+        app.get("/ensemble/consult/{idEnsemble}", ensembleController::getEnsembleById);
+        app.get("/ensemble/{idEnsemble}/add/{courseId}", ensembleController::addCourse); 
+        app.get("/ensemble/{idEnsemble}/delete/{courseId}", ensembleController::deleteCourse);
     }
 }

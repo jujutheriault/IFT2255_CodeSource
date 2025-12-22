@@ -1,9 +1,9 @@
 package com.diro.ift2255.controller;
 
-import io.javalin.http.Context;
+
 import com.diro.ift2255.model.Course;
-import com.diro.ift2255.model.User;
 import com.diro.ift2255.model.RechercheCours;
+import com.diro.ift2255.model.User;
 import com.diro.ift2255.service.CourseService;
 import com.diro.ift2255.service.UserService;
 import com.diro.ift2255.util.ResponseUtil;
@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Arrays;
+import io.javalin.http.Context;
+
 
 public class CourseController {
 
@@ -25,13 +27,24 @@ public class CourseController {
         this.userService = userService;
     }
 
+    /**
+     * Setter pour l'utilisateur
+     * @param user un utilisateur
+     */
     public void setUser(User user) {
         this.user = user;
     }
-
+    /**
+     * Getter pourun utilisateur
+     * @return un utilisateur
+     */
     public User getUser() {
         return this.user;
     }
+    /**
+     * Controlleur pour un service externe
+     * @param service un service externe
+     */
 
     // ==================== Javalin routes ====================
     
