@@ -5,11 +5,16 @@ import java.util.Scanner;
 public class Cli {
 
     private final String baseHost;
-
+    /**
+     * Constructeur du CLI
+     * @param baseHost
+     */
     public Cli(String baseHost) {
         this.baseHost = baseHost;
     }
-
+    /**
+     * fonction qui demarre le CLI
+     */
     public void start() {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
@@ -43,6 +48,10 @@ public class Cli {
     }
 
     // Imprime le URL correspondant à la recherche de cours
+    /**
+     * Recherche de cours par mots cles
+     * @param scanner un scanner qui lit les entrees
+     */
     private void cliSearch(Scanner scanner) {
         System.out.print("Entrez le mot-clé de recherche : ");
         String input = scanner.nextLine();
