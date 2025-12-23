@@ -92,6 +92,8 @@ public class Cli {
         
         System.out.println("\n[Action] Recherche lancée...");
         System.out.println("URL cible : " + url);
+
+        httpGetAndPrint(url);
     }
 
     /**
@@ -110,6 +112,8 @@ public class Cli {
 
         System.out.println("\n[Action] Recherche lancée...");
         System.out.println("URL cible : " + url);
+
+        httpGetAndPrint(url);
     }
 
 
