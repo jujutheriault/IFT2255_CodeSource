@@ -98,7 +98,7 @@ public class Cli {
                 ensembleId = scanner.nextLine();
                 System.out.print("ID du cours à supprimer : ");
                 courseId = scanner.nextLine();
-                url = baseHost + "/ensemble/" + ensembleId + "/remove/" + courseId;
+                url = baseHost + "/ensemble/" + ensembleId + "/delete/" + courseId;
                 System.out.println("\n[Action] Suppression du cours...");
                 break;
             // Consulter un ensemble
