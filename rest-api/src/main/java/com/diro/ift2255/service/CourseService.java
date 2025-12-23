@@ -44,7 +44,7 @@ public class CourseService {
     }
 
     /** Courses by program */
-    public List<Course> getCoursesByProgram(Map<String, String> queryParams) {
+    public List<String> getCoursesByProgram(Map<String, String> queryParams) {
 
         Map<String, String> params =
                 (queryParams == null) ? Collections.emptyMap() : queryParams;
@@ -53,22 +53,44 @@ public class CourseService {
         URI uri = HttpClientApi.buildUri(PROGRAM_URL, params);
 
         try {
-            Map<String, Object> response =
+            List<Map<String, Object>> programs =
                     clientApi.get(uri, new TypeReference<>() {});
 
-            Object rawCourses = response.get("courses");
-            if (!(rawCourses instanceof List<?> list)) return Collections.emptyList();
+            if (programs.isEmpty()) return Collections.emptyList();
 
-            // IMPORTANT: ici, list contient des Map (pas des Course directement)
-            ObjectMapper mapper = new ObjectMapper();
+            @SuppressWarnings("unchecked")
+            List<String> courses =
+                    (List<String>) programs.get(0).get("courses");
 
-            List<Course> courses = new ArrayList<>();
-            for (Object item : list) {
-                Course c = mapper.convertValue(item, Course.class);
-                courses.add(c);
-            }
+            return (courses == null) ? Collections.emptyList() : courses;
 
-            return courses;
+        } catch (RuntimeException e) {
+            return Collections.emptyList();
+        }
+    }
+
+    /* Courses by program and semester */
+    public List<Course> getCoursesByProgramAndSemester(Map<String, String> queryParams, String semester) {
+
+        // 1) récupérer les sigles du programme
+        List<String> sigles = getCoursesByProgram(queryParams);
+        System.out.println("[DEBUG] Sigles récupérés pour le programme : " + sigles);
+        if (sigles.isEmpty()) return Collections.emptyList();
+
+        // 2) construire query params pour l'endpoint courses
+        Map<String, String> params = new HashMap<>();
+        params.put("courses_sigle", String.join(",", sigles).toLowerCase());
+        params.put("schedule_semester", semester.toLowerCase()); // ex a25
+        params.put("include_schedule", "true");
+
+        String COURSES_URL = "https://planifium-api.onrender.com/api/v1/courses";
+        URI uri = HttpClientApi.buildUri(COURSES_URL, params);
+
+        System.out.println("[DEBUG] Appel Planifium URI : " + uri);
+
+        try {
+            // Cet endpoint devrait renvoyer directement une liste d'objets cours
+            return clientApi.get(uri, new TypeReference<List<Course>>() {});
 
         } catch (RuntimeException e) {
             return Collections.emptyList();

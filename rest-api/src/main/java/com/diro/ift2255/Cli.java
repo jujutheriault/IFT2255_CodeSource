@@ -76,7 +76,7 @@ public class Cli {
     private void cliProgram(Scanner scanner) {
         System.out.print("Entrez le numéro du programme : ");
         String program = scanner.nextLine();
-        String url = baseHost + "/programs?programs_list=" + program + "&include_courses_detail=true";
+        String url = baseHost + "/programs?programs_list=" + program;
         
         System.out.println("\n[Action] Recherche lancée...");
         System.out.println("URL cible : " + url);
@@ -88,11 +88,14 @@ public class Cli {
      */
     private void cliTrimestre(Scanner scanner) {
         System.out.print("Entrez le numéro du programme : ");
-        String program = scanner.nextLine();
+        String program = scanner.nextLine().trim();
+
         System.out.print("Entrez le trimestre à consulter (ex: a25): ");
-        String trimestre = scanner.nextLine();
-        String url = baseHost + "/programs?programs_list=" + program + "&schedule_semester=" + trimestre;
-        
+        String semester = scanner.nextLine().trim().toLowerCase();
+
+        // Nouvelle route locale
+        String url = baseHost + "/programs/semester/" + semester + "?programs_list=" + program + "&include_schedule=true";
+
         System.out.println("\n[Action] Recherche lancée...");
         System.out.println("URL cible : " + url);
     }

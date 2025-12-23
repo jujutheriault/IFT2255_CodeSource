@@ -133,7 +133,7 @@ public class CourseController {
     public void getCoursesByProgram(Context ctx) {
         Map<String, String> queryParams = extractQueryParams(ctx);
 
-        List<Course> courses = service.getCoursesByProgram(queryParams);
+        List<String> courses = service.getCoursesByProgram(queryParams);
 
         if (courses.isEmpty()) {
             ctx.status(404).json(ResponseUtil.formatError("Aucun programme trouvé ou aucun cours associé."));
@@ -142,6 +142,33 @@ public class CourseController {
 
         ctx.status(200).json(courses);
     }
+
+
+
+    /**
+     * Recherche de la liste de cours d'un programme et d'un trimestre.
+     * @param ctx Contexte Javalin représentant la requête et la réponse HTTP
+     */   
+
+    public void getCoursesByProgramAndSemester(Context ctx) {
+        Map<String, String> queryParams = extractQueryParams(ctx);
+
+        String semester = ctx.pathParam("semester"); // ex "a25"
+        if (semester == null || semester.isBlank()) {
+            ctx.status(400).json(ResponseUtil.formatError("Le paramètre semester est requis (ex: a25)."));
+            return;
+        }
+
+        List<Course> courses = service.getCoursesByProgramAndSemester(queryParams, semester);
+
+        if (courses.isEmpty()) {
+            ctx.status(404).json(ResponseUtil.formatError("Aucun cours trouvé pour ce programme et ce trimestre."));
+            return;
+        }
+
+        ctx.status(200).json(courses);
+    }
+
 
 
 }

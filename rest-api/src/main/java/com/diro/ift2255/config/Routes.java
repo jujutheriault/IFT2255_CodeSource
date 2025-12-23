@@ -44,6 +44,7 @@ public class Routes {
 
         // Route pour la recherche par programme
         app.get("/programs/", courseController::getCoursesByProgram);
+        app.get("/programs/semester/{semester}", courseController::getCoursesByProgramAndSemester);
         // http://localhost:7070/courses/search/IFT?courses_sigle=ift1015,ift1025,esp1900  utilisation url
         // http://localhost:7070/courses/search/java
     }
