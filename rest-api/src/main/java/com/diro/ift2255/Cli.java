@@ -34,6 +34,8 @@ public class Cli {
             System.out.println("\nVeuillez indiquer la fonctionnalité à effectuer:");
             System.out.println("1. Rechercher un cours (par mot-clé)");
             System.out.println("2. Manipuler un ensemble de cours");
+            System.out.println("3. Consulter la liste de cours d'un programme");
+            System.out.println("4. Consulter la liste de cours d'un trimestre");
             System.out.println("0. Quitter");
             System.out.print("> ");
 
@@ -45,6 +47,12 @@ public class Cli {
                     break;
                 case "2":
                     cliEnsemble(scanner);
+                    break;
+                case "3":
+                    cliProgram(scanner);
+                    break;
+                case "4":
+                    cliTrimestre(scanner);
                     break;
                 case "0":
                     System.out.println("Fermeture du CLI...");
@@ -72,6 +80,38 @@ public class Cli {
 
         httpGetAndPrint(url);
     }
+
+    /**
+     * Recherche de la liste de cours par programme
+     * @param scanner un scanner qui lit les entrees
+     */
+    private void cliProgram(Scanner scanner) {
+        System.out.print("Entrez le numéro du programme : ");
+        String program = scanner.nextLine();
+        String url = baseHost + "/programs?programs_list=" + program;
+        
+        System.out.println("\n[Action] Recherche lancée...");
+        System.out.println("URL cible : " + url);
+    }
+
+    /**
+     * Recherche de la liste de cours par trimestre
+     * @param scanner un scanner qui lit les entrees
+     */
+    private void cliTrimestre(Scanner scanner) {
+        System.out.print("Entrez le numéro du programme : ");
+        String program = scanner.nextLine().trim();
+
+        System.out.print("Entrez le trimestre à consulter (ex: a25): ");
+        String semester = scanner.nextLine().trim().toLowerCase();
+
+        // Nouvelle route locale
+        String url = baseHost + "/programs/semester/" + semester + "?programs_list=" + program + "&include_schedule=true";
+
+        System.out.println("\n[Action] Recherche lancée...");
+        System.out.println("URL cible : " + url);
+    }
+
 
     // Imprime le URL correspondant à la manipulation effectuée
     private void cliEnsemble(Scanner scanner) {

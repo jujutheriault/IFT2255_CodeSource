@@ -31,10 +31,10 @@ class ComparaisonControllerTest {
         controller = new ComparaisonController();
 
         c1 = new Course("IFT-1015", "Programmation 1");
-        c1.setCredits(3);
+        c1.setCredits(3.0);
 
         c2 = new Course("MAT-1600", "Algèbre linéaire");
-        c2.setCredits(4);
+        c2.setCredits(4.0);
     }
 
     @AfterEach
