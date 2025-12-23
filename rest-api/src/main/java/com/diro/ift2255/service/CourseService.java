@@ -3,6 +3,7 @@ package com.diro.ift2255.service;
 import com.diro.ift2255.model.Course;
 import com.diro.ift2255.util.HttpClientApi;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
 import java.util.*;
 
@@ -42,7 +43,8 @@ public class CourseService {
         }
     }
 
-    public List<String> getCoursesByProgram(Map<String, String> queryParams) {
+    /** Courses by program */
+    public List<Course> getCoursesByProgram(Map<String, String> queryParams) {
 
         Map<String, String> params =
                 (queryParams == null) ? Collections.emptyMap() : queryParams;
@@ -51,21 +53,26 @@ public class CourseService {
         URI uri = HttpClientApi.buildUri(PROGRAM_URL, params);
 
         try {
-            List<Map<String, Object>> programs =
+            Map<String, Object> response =
                     clientApi.get(uri, new TypeReference<>() {});
 
-            if (programs.isEmpty()) return Collections.emptyList();
+            Object rawCourses = response.get("courses");
+            if (!(rawCourses instanceof List<?> list)) return Collections.emptyList();
 
-            @SuppressWarnings("unchecked")
-            List<String> courses =
-                    (List<String>) programs.get(0).get("courses");
+            // IMPORTANT: ici, list contient des Map (pas des Course directement)
+            ObjectMapper mapper = new ObjectMapper();
 
-            return (courses == null) ? Collections.emptyList() : courses;
+            List<Course> courses = new ArrayList<>();
+            for (Object item : list) {
+                Course c = mapper.convertValue(item, Course.class);
+                courses.add(c);
+            }
+
+            return courses;
 
         } catch (RuntimeException e) {
             return Collections.emptyList();
         }
     }
-
 
 }

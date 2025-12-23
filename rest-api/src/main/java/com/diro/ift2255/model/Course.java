@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Course {
+    @JsonProperty("_id")
     private String id;
     private String name;
     private String description = null;

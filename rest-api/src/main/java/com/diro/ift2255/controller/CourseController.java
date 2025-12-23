@@ -133,7 +133,7 @@ public class CourseController {
     public void getCoursesByProgram(Context ctx) {
         Map<String, String> queryParams = extractQueryParams(ctx);
 
-        List<String> courses = service.getCoursesByProgram(queryParams);
+        List<Course> courses = service.getCoursesByProgram(queryParams);
 
         if (courses.isEmpty()) {
             ctx.status(404).json(ResponseUtil.formatError("Aucun programme trouvé ou aucun cours associé."));

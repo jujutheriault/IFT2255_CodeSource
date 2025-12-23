@@ -26,6 +26,7 @@ public class Cli {
             System.out.println("1. Rechercher un cours (par mot-clé)");
             System.out.println("2. Manipuler un ensemble de cours");
             System.out.println("3. Consulter la liste de cours d'un programme");
+            System.out.println("4. Consulter la liste de cours d'un trimestre");
             System.out.println("0. Quitter");
             System.out.print("> ");
 
@@ -40,6 +41,9 @@ public class Cli {
                     break;
                 case "3":
                     cliProgram(scanner);
+                    break;
+                case "4":
+                    cliTrimestre(scanner);
                     break;
                 case "0":
                     System.out.println("Fermeture du CLI...");
@@ -66,13 +70,28 @@ public class Cli {
     }
 
     /**
-     * Recherche de cours par mots cles
+     * Recherche de la liste de cours par programme
      * @param scanner un scanner qui lit les entrees
      */
     private void cliProgram(Scanner scanner) {
         System.out.print("Entrez le numéro du programme : ");
         String program = scanner.nextLine();
-        String url = baseHost + "/programs?programs_list=" + program;
+        String url = baseHost + "/programs?programs_list=" + program + "&include_courses_detail=true";
+        
+        System.out.println("\n[Action] Recherche lancée...");
+        System.out.println("URL cible : " + url);
+    }
+
+    /**
+     * Recherche de la liste de cours par trimestre
+     * @param scanner un scanner qui lit les entrees
+     */
+    private void cliTrimestre(Scanner scanner) {
+        System.out.print("Entrez le numéro du programme : ");
+        String program = scanner.nextLine();
+        System.out.print("Entrez le trimestre à consulter (ex: a25): ");
+        String trimestre = scanner.nextLine();
+        String url = baseHost + "/programs?programs_list=" + program + "&schedule_semester=" + trimestre;
         
         System.out.println("\n[Action] Recherche lancée...");
         System.out.println("URL cible : " + url);
