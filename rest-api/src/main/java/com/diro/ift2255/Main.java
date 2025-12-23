@@ -1,9 +1,8 @@
 package com.diro.ift2255;
 
-import io.javalin.Javalin;
-
 import com.diro.ift2255.config.Routes;
-import com.diro.ift2255.Cli;
+
+import io.javalin.Javalin;
 
 public class Main {
     public static void main(String[] args) {
