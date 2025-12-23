@@ -21,7 +21,7 @@ public class Routes {
         registerUserRoutes(app);
         registerCourseRoutes(app);
         registerComparisonRoutes(app);
-        registerProgramRoutes(app); // ✅ AJOUT
+        registerProgramRoutes(app);
         createEnsembleRoutes(app);
     }
 
@@ -45,11 +45,12 @@ public class Routes {
         app.get("/courses", courseController::getAllCourses);
         app.get("/courses/{id}", courseController::getCourseById);
         
-        // ✅ NOUVELLES ROUTES
+        // Routes de recherche
         app.get("/courses/{id}/schedule", courseController::getCourseSchedule);
         app.get("/courses/search/by-sigles", courseController::getCoursesBySigles);
         app.get("/courses/search/by-name", courseController::searchByName);
         app.get("/courses/search/by-description", courseController::searchByDescription);
+        app.get("/courses/search/{recherche}", courseController::searchCourses); // ✅ Déplacé ici
     }
 
     private static void registerComparisonRoutes(Javalin app) {
@@ -80,20 +81,15 @@ public class Routes {
         });
     }
 
-    // ✅ NOUVELLE SECTION : Routes des programmes
     private static void registerProgramRoutes(Javalin app) {
         ProgramService programService = new ProgramService(new HttpClientApi());
         ProgramController programController = new ProgramController(programService);
 
         app.get("/programs/{id}", programController::getProgramById);
-        app.get("/courses/search/{recherche}", courseController::searchCourses); 
-        // http://localhost:7070/courses/search/IFT?courses_sigle=ift1015,ift1025,esp1900  utilisation url
-        // http://localhost:7070/courses/search/java
     }
 
     private static void createEnsembleRoutes(Javalin app){
         EnsembleController ensembleController = new EnsembleController();
-
 
         app.get("/ensemble/create/{idEnsemble}", ensembleController::createEnsemble);
         app.get("/ensemble/consult/{idEnsemble}", ensembleController::getEnsembleById);

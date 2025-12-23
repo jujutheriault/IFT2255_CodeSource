@@ -6,13 +6,10 @@ import java.util.*;
 
 public class ComparaisonController {
 
-    private TableauComparaison tableau;
-    // Tableau contenant les cours sélectionnés pour comparaison
+    private TableauComparaison tableau; // ✅ UNE SEULE DÉCLARATION
 
-
-    private TableauComparaison tableau;
     /**
-     * Constructeur du controlleur de comparasion de cours
+     * Constructeur du controlleur de comparaison de cours
      */
     public ComparaisonController() {
         this.tableau = new TableauComparaison();
