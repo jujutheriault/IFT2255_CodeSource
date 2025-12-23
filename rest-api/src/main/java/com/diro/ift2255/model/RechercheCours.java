@@ -68,13 +68,23 @@ public class RechercheCours {
         }
                 
         List<Course> resultat = new ArrayList<>();
+        String q = motRecherche.toLowerCase();
 
         for (Course cours : listeCours) {
-            if (
-                (cours.getId() != null) && cours.getId().toLowerCase().contains(motRecherche.toLowerCase())
-                || (cours.getName() != null) && cours.getName() != null && cours.getName().toLowerCase().contains(motRecherche.toLowerCase())
-                || ((cours.getDescription() != null) && cours.getDescription() != null && cours.getDescription().toLowerCase().contains(motRecherche.toLowerCase()))
-            ) {
+
+            boolean matchId = 
+                cours.getId() != null && 
+                cours.getId().toLowerCase().contains(q);
+
+            boolean matchName = 
+                cours.getName() != null && 
+                cours.getName().toLowerCase().contains(q);
+
+            boolean matchDescription = 
+                cours.getDescription() != null &&
+                cours.getDescription().toLowerCase().contains(q);
+
+            if (matchId || matchName || matchDescription) {
                 resultat.add(cours);
             }
         }
