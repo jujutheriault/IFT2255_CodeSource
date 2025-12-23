@@ -18,8 +18,15 @@ import io.javalin.Javalin;
 public class Routes {
 
     public static void register(Javalin app) {
+
+        HttpClientApi httplientApi = new HttpClientApi();
+
+        CourseService courseService = new CourseService(httplientApi);
+        CourseController courseController = new CourseController(courseService);
+
         registerUserRoutes(app);
-        registerCourseRoutes(app);
+        registerCourseRoutes(app, courseController);
+        registerProgramRoutes(app, courseController);
         createEnsembleRoutes(app);
     }
 
@@ -34,24 +41,25 @@ public class Routes {
         app.delete("/users/{id}", userController::deleteUser);
     }
 
-    private static void registerCourseRoutes(Javalin app) {
-        CourseService courseService = new CourseService(new HttpClientApi());
-        CourseController courseController = new CourseController(courseService);
+    private static void registerCourseRoutes(Javalin app, CourseController courseController) {
 
         app.get("/courses", courseController::getAllCourses);
         app.get("/courses/{id}", courseController::getCourseById);
         app.get("/courses/search/{recherche}", courseController::searchCourses); 
+    }
 
+    private static void registerProgramRoutes(Javalin app, CourseController courseController) {
         // Route pour la recherche par programme
-        app.get("/programs/", courseController::getCoursesByProgram);
+        app.get("/programs", courseController::getCoursesByProgram);
         app.get("/programs/semester/{semester}", courseController::getCoursesByProgramAndSemester);
+    }
+
         // http://localhost:7070/courses/search/IFT?courses_sigle=ift1015,ift1025,esp1900  utilisation url
         // http://localhost:7070/courses/search/java
-    }
+ 
 
     private static void createEnsembleRoutes(Javalin app){
         EnsembleController ensembleController = new EnsembleController();
-
 
         app.get("/ensemble/create/{idEnsemble}", ensembleController::createEnsemble);
         app.get("/ensemble/consult/{idEnsemble}", ensembleController::getEnsembleById);

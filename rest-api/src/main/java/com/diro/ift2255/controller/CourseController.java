@@ -10,6 +10,7 @@ import com.diro.ift2255.model.RechercheCours;
 import com.diro.ift2255.model.User;
 import com.diro.ift2255.service.CourseService;
 import com.diro.ift2255.util.ResponseUtil;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.javalin.http.Context;
 
@@ -20,25 +21,27 @@ public class CourseController {
     private User user = null;
 
     /**
+     * Controlleur pour un service externe
+     * @param service un service externe
+     */
+    public CourseController(CourseService service) {
+        this.service = service;
+    }
+
+    /**
      * Setter pour l'utilisateur
      * @param user un utilisateur
      */
     public void setUser(User user) {
         this.user = user;
     }
+
     /**
      * Getter pourun utilisateur
      * @return un utilisateur
      */
     public User getUser() {
         return this.user;
-    }
-    /**
-     * Controlleur pour un service externe
-     * @param service un service externe
-     */
-    public CourseController(CourseService service) {
-        this.service = service;
     }
 
     /**
@@ -73,6 +76,89 @@ public class CourseController {
     }
 
     /**
+     * Recherche des cours en fonction des paramètres de requête.
+     * @param ctx Contexte Javalin représentant la requête et la réponse HTTP
+     */   
+
+    public void searchCourses(Context ctx) {
+
+        Map<String, String> queryParams = extractQueryParams(ctx);
+
+        // On va chercher les cours selon les paramètres puis on crée un objet RechercheCours
+        List<Course> courses = service.getAllCourses(queryParams);
+        RechercheCours recherche = new RechercheCours(courses, user);
+
+        String motRecherche = ctx.pathParam("recherche");
+
+        List<Course> searchResult = recherche.rechercher(motRecherche);
+
+        if (!searchResult.isEmpty()) {
+            ctx.json(searchResult);
+        } else {
+            ctx.status(404).json(ResponseUtil.formatError("Aucun résultat trouvé pour la recherche" + motRecherche));
+        }
+    }  
+
+     /**
+     * Recherche de la liste de cours d'un programme.
+     * @param ctx Contexte Javalin représentant la requête et la réponse HTTP
+     */   
+
+    public void getCoursesByProgram(Context ctx) {
+        String programId = ctx.queryParam("programs_list");
+        String responseLevel = ctx.queryParam("response_level");
+
+        if (programId == null || programId.isBlank()) {
+            ctx.status(400).json(ResponseUtil.formatError("Le paramètre programs_list est requis (ex: 117510)."));
+            return;
+    }
+
+        boolean includeDetail = "true".equalsIgnoreCase(ctx.queryParam("include_courses_detail"));
+        JsonNode programData = service.getProgram(programId, includeDetail, responseLevel);
+        ctx.status(200).json(programData);
+    }
+
+    /**
+     * Recherche de la liste de cours d'un programme et d'un trimestre.
+     * @param ctx Contexte Javalin représentant la requête et la réponse HTTP
+     */   
+
+    public void getCoursesByProgramAndSemester(Context ctx) {
+        String programId = ctx.queryParam("programs_list");
+        
+        if (programId == null || programId.isBlank()) {
+            ctx.status(400).json(ResponseUtil.formatError("Le paramètre programs_list est requis (ex: 117510)."));
+            return;
+        }
+        
+        String semesterRaw = ctx.pathParam("semester");
+
+        if (semesterRaw == null || semesterRaw.isBlank()) {
+            ctx.status(400).json(ResponseUtil.formatError("Le paramètre semester est requis (ex: H25 ou a25)."));
+            return;
+        }
+
+        String semester;
+
+        try {
+            semester = service.normalizeSemester(semesterRaw);
+        } catch (IllegalArgumentException e) {
+            ctx.status(400).json(ResponseUtil.formatError(e.getMessage()));
+            return;
+        }
+
+        List<Course> courses = service.getCoursesByProgramAndSemester(programId, semester);
+
+        if (courses.isEmpty()) {
+            ctx.status(404).json(ResponseUtil.formatError("Aucun cours trouvé pour ce programme et ce trimestre."));
+            return;
+        }
+
+        ctx.status(200).json(courses);
+    }
+
+
+    /**
      * Vérifie que l'ID du cours est bien formé
      * @param courseId L'ID du cours à valider
      * @return Valeur booléeene indiquant si l'ID est valide
@@ -97,78 +183,4 @@ public class CourseController {
 
         return queryParams;
     }
-
-    /**
-     * Recherche des cours en fonction des paramètres de requête.
-     * @param ctx Contexte Javalin représentant la requête et la réponse HTTP
-     */   
-
-    public void searchCourses(Context ctx) {
-
-        Map<String, String> queryParams = extractQueryParams(ctx);
-
-        // On va chercher les cours selon les paramètres puis on crée un objet RechercheCours
-        List<Course> courses = service.getAllCourses(queryParams);
-        RechercheCours recherche = new RechercheCours(courses, user);
-
-        String motRecherche = ctx.pathParam("recherche");
-
-        List<Course> searchResult = recherche.rechercher(motRecherche);
-
-        if (!searchResult.isEmpty()) {
-            ctx.json(searchResult);
-        } else {
-            ctx.status(404).json(ResponseUtil.formatError("Aucun résultat trouvé pour la recherche" + motRecherche));
-        }
-
-    }  
-
-
-
-    /**
-     * Recherche de la liste de cours d'un programme.
-     * @param ctx Contexte Javalin représentant la requête et la réponse HTTP
-     */   
-
-    public void getCoursesByProgram(Context ctx) {
-        Map<String, String> queryParams = extractQueryParams(ctx);
-
-        List<String> courses = service.getCoursesByProgram(queryParams);
-
-        if (courses.isEmpty()) {
-            ctx.status(404).json(ResponseUtil.formatError("Aucun programme trouvé ou aucun cours associé."));
-            return;
-        }
-
-        ctx.status(200).json(courses);
-    }
-
-
-
-    /**
-     * Recherche de la liste de cours d'un programme et d'un trimestre.
-     * @param ctx Contexte Javalin représentant la requête et la réponse HTTP
-     */   
-
-    public void getCoursesByProgramAndSemester(Context ctx) {
-        Map<String, String> queryParams = extractQueryParams(ctx);
-
-        String semester = ctx.pathParam("semester"); // ex "a25"
-        if (semester == null || semester.isBlank()) {
-            ctx.status(400).json(ResponseUtil.formatError("Le paramètre semester est requis (ex: a25)."));
-            return;
-        }
-
-        List<Course> courses = service.getCoursesByProgramAndSemester(queryParams, semester);
-
-        if (courses.isEmpty()) {
-            ctx.status(404).json(ResponseUtil.formatError("Aucun cours trouvé pour ce programme et ce trimestre."));
-            return;
-        }
-
-        ctx.status(200).json(courses);
-    }
-
-
-
 }
