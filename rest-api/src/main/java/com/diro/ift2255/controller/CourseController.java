@@ -183,4 +183,52 @@ public class CourseController {
 
         return queryParams;
     }
+
+    public void getCourseSchedule(Context ctx) {
+        String id = ctx.pathParam("id");
+
+        if (!validateCourseId(id)) {
+            ctx.status(400).json(ResponseUtil.formatError("Le paramètre id n'est pas valide."));
+            return;
+        }
+
+        String semesterRaw = ctx.queryParam("semester");
+
+        if (semesterRaw == null || semesterRaw.isBlank()) {
+            ctx.status(400).json(ResponseUtil.formatError("Le paramètre semester est requis (ex: H25, A24, E24)."));
+            return;
+        }
+
+        String semester;
+        try {
+            semester = service.normalizeSemester(semesterRaw); // h25/a25/e24
+        } catch (IllegalArgumentException e) {
+            ctx.status(400).json(ResponseUtil.formatError(e.getMessage()));
+            return;
+        }
+
+        Optional<Course> courseOpt = service.getCourseWithScheduleForSemester(id, semester);
+
+        if (courseOpt.isEmpty()) {
+            ctx.status(404).json(ResponseUtil.formatError("Cours introuvable: " + id));
+            return;
+        }
+
+        Course course = courseOpt.get();
+
+    // schedules peut être null ou vide si le cours n’est pas offert à ce trimestre
+        if (course.getSchedules() == null || course.getSchedules().isEmpty()) {
+            ctx.status(404).json(ResponseUtil.formatError(
+                "Aucun horaire disponible pour " + id + " au trimestre " + semesterRaw.toUpperCase()
+                + ". Le cours n'est peut-être pas offert à ce trimestre."
+            ));
+        return;
+        }
+
+    // Option 1 (simple): retourner juste schedules
+        ctx.status(200).json(course.getSchedules());
+
+    // Option 2 (si tu préfères retourner le cours complet):
+    // ctx.status(200).json(course);
+    }
 }

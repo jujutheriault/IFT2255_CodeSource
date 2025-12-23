@@ -205,4 +205,13 @@ public class CourseService {
 
         return null;
     }
+
+    public Optional<Course> getCourseWithScheduleForSemester(String courseId, String semesterNormalized) {
+        Map<String, String> params = new HashMap<>();
+        params.put("include_schedule", "true");
+        params.put("schedule_semester", semesterNormalized); // ex: h25 / a25 / e24
+
+        return getCourseById(courseId, params);
+    }
+
 }

@@ -46,6 +46,8 @@ public class Routes {
         app.get("/courses", courseController::getAllCourses);
         app.get("/courses/{id}", courseController::getCourseById);
         app.get("/courses/search/{recherche}", courseController::searchCourses); 
+        app.get("/courses/{id}/schedule", courseController::getCourseSchedule);
+
     }
 
     private static void registerProgramRoutes(Javalin app, CourseController courseController) {
