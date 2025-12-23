@@ -123,4 +123,25 @@ public class CourseController {
 
     }  
 
+
+
+    /**
+     * Recherche de la liste de cours d'un programme.
+     * @param ctx Contexte Javalin représentant la requête et la réponse HTTP
+     */   
+
+    public void getCoursesByProgram(Context ctx) {
+        Map<String, String> queryParams = extractQueryParams(ctx);
+
+        List<String> courses = service.getCoursesByProgram(queryParams);
+
+        if (courses.isEmpty()) {
+            ctx.status(404).json(ResponseUtil.formatError("Aucun programme trouvé ou aucun cours associé."));
+            return;
+        }
+
+        ctx.status(200).json(courses);
+    }
+
+
 }
