@@ -85,12 +85,11 @@ Enfin, l’application propose une fonctionnalité de comparaison de plusieurs c
     
 **Afficher l'horaire**
 
-**Étudiant**
-**Collecter et soumettre des avis étudiants à l'API REST**
+**Bot Discord**
+- **Collecter et soumettre des avis étudiants à l'API REST**
 
 
 ## Instructions d'installation
-
 
 1. **Cloner le dépôt**
    ```bash
