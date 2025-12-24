@@ -85,7 +85,7 @@ Enfin, l’application propose une fonctionnalité de comparaison de plusieurs c
     
 **Afficher l'horaire**
 
-**Bot Discord**
+**Étudiant**
 **Collecter et soumettre des avis étudiants à l'API REST**
 
 
