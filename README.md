@@ -66,24 +66,22 @@ Enfin, l’application propose une fonctionnalité de comparaison de plusieurs c
   - Nombre de participants total
   - Données sur plusieurs trimestres
 
-**Consulter les avis** d'étudiants ayant suivi le cours :
-- Note moyenne des étudiants (sur 5 étoiles)
-- La charge de travail réelle
-- La qualité de l'enseignement
-- La difficulté du cours
-**Poster des avis sur des cours déjà suivis**
+- **Consulter les avis** d'étudiants ayant suivi le cours :
+  - Note moyenne des étudiants (sur 5 étoiles)
+  - La charge de travail réelle
+  - La qualité de l'enseignement
+  - La difficulté du cours
+    
+- **Poster des avis sur des cours déjà suivis**
   
-**Vérifier automatiquement** si vous êtes éligible à un cours selon :
+- **Vérifier automatiquement** si vous êtes éligible à un cours selon :
   - Votre cycle d'études (Baccalauréat, Maîtrise, Doctorat)
   - Le cycle requis pour le cours
 
-**Comparer jusqu'à plusieurs cours**
-- **Visualisation synthétique** incluant :
-  - Sigles et noms des cours
-  - Nombre de crédits de chaque cours
-  - **Charge de travail totale** (somme des crédits)
+- **Comparer plusieurs cours**
+  - **Visualisation synthétique** incluant : Sigles et noms des cours, Nombre de crédits de chaque cours, Charge de travail totale** (somme des crédits)
     
-**Afficher l'horaire**
+- **Afficher l'horaire**
 
 **Bot Discord**
 - **Collecter et soumettre des avis étudiants à l'API REST**
