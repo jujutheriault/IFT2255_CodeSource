@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
 
- import java.nio.file.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,7 +41,8 @@ public class Course {
     @JsonProperty("requirement_text")
     private String requirementText;
 
-    private List<Object> schedules; 
+    @JsonProperty("schedules")
+    private JsonNode schedules;
 
     // Champs internes (pas dans Planifium)
     private String professeur;
@@ -92,8 +93,8 @@ public class Course {
     public String getRequirementText() { return requirementText; }
     public void setRequirementText(String requirementText) { this.requirementText = requirementText; }
 
-    public List<Object> getSchedules() { return schedules; }
-    public void setSchedules(List<Object> schedules) { this.schedules = schedules; }
+public JsonNode getSchedules() { return schedules; }
+public void setSchedules(JsonNode schedules) { this.schedules = schedules; }
 
     // Champs internes
     public String getProfesseur() { return professeur; }
