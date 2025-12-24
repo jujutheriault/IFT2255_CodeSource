@@ -79,7 +79,7 @@ Enfin, l’application propose une fonctionnalité de comparaison de plusieurs c
   - Le cycle requis pour le cours
 
 - **Comparer plusieurs cours**
-  - **Visualisation synthétique** incluant : Sigles et noms des cours, Nombre de crédits de chaque cours, Charge de travail totale** (somme des crédits)
+  - **Visualisation synthétique** incluant : Sigles et noms des cours, Nombre de crédits de chaque cours, Charge de travail totale (somme des crédits)
     
 - **Afficher l'horaire**
 
