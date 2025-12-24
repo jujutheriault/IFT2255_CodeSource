@@ -10,6 +10,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
 import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -137,22 +138,27 @@ class EnsembleControllerTest {
     @DisplayName("Add course should return 200 when course is added successfully")
     void testAddCourseSuccess() {
         // ARRANGE
-        when(mockContext.pathParam("idEnsemble")).thenReturn("ENS-1");
-        when(mockContext.pathParam("courseId")).thenReturn("IFT-1015");
 
-        when(mockContext.status(anyInt())).thenReturn(mockContext);
+        Context ctxCreate = mock(Context.class);
+        Context ctxAdd = mock(Context.class);
 
-        controller.createEnsemble(mockContext);
+        when(ctxCreate.pathParam("idEnsemble")).thenReturn("ENS-1");
+        when(ctxCreate.status(anyInt())).thenReturn(ctxCreate);
+        when(ctxAdd.pathParam("idEnsemble")).thenReturn("ENS-1");
+        when(ctxAdd.pathParam("courseId")).thenReturn("IFT-1015");
 
-        // ACT
-        controller.addCourse(mockContext);
+        when(ctxAdd.status(anyInt())).thenReturn(ctxAdd);
+        //ACT
+        controller.createEnsemble(ctxCreate);
+        controller.addCourse(ctxAdd);
+        ;
 
         // ASSERT
         try {
-            verify(mockContext).status(200);
+            verify(ctxAdd).status(200);
             OK("Status 200 set when course added", false);
 
-            verify(mockContext).json(argThat(obj ->
+            verify(ctxAdd).json(argThat(obj ->
                     obj instanceof EnsembleCours &&
                     ((EnsembleCours) obj).getList().contains("IFT-1015")));
             OK("Course added to ensemble");

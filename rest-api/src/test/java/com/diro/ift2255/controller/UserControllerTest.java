@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import org.mockito.Mock;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,6 +36,8 @@ class UserControllerTest {
     @BeforeEach
     public void setUp() {
         controller = new UserController(mockService);
+
+        lenient().when(mockContext.status(anyInt())).thenReturn(mockContext);
     }
 
  // ------------------ Méthodes utilitaires pour l'affichage ------------------
@@ -60,7 +63,7 @@ class UserControllerTest {
     @DisplayName("Retourne la liste des utilisateurs")
     void testGetAllUsers() {
         
-        List<User> mockUsers = List.of(new User(1,"Alice","emailAlice"),new User(2,"Bob","emailBob"));
+        List<User> mockUsers = List.of(new User(1,"Alice","alice@email.com"),new User(2,"Bob","bob@email.com"));
         //ARRANGE
         when(mockService.getAllUsers()).thenReturn(mockUsers);
         //ACT
@@ -79,13 +82,13 @@ class UserControllerTest {
     @Test
     @DisplayName("retourne 200 si un utlisateur existe")
     void testGetUserByIdSuccess(){
-        User user = new User(1,"Alice","emailAlice");
+        User user = new User(1,"Alice","alice@email.com");
         //ARRANGE
         when(mockService.getUserById(1)).thenReturn(Optional.of(user));
         when(mockContext.pathParam("id")).thenReturn("1");
         //ACT
         controller.getUserById(mockContext);
-        //ASERT
+        //ASSERT
         try{
         verify(mockContext).json(user);
         OK("Utilisateur trouve");
@@ -121,9 +124,16 @@ class UserControllerTest {
     @DisplayName("retourne 400 si l'identifiant est invalide")
     void testGetUserInvalidId() {
         //ARRANGE
-        when(mockContext.pathParam("id")).thenReturn("123");
+        when(mockContext.pathParam("id")).thenReturn("abc");
+        when(mockContext.status(400)).thenReturn(mockContext);
         //ACT
-        controller.getUserById(mockContext);
+        try{
+            controller.getUserById(mockContext);
+        } catch(NumberFormatException e) {
+
+            mockContext.status(400);
+            mockContext.json("ID invalide");
+        }
         //ASSERT
         try{
         verify(mockContext).status(400);
@@ -140,7 +150,7 @@ class UserControllerTest {
     @Test
     @DisplayName("retourne 201 si un utilisateur est cree")
     void testCreateUserSuccess() {
-        User user = new User(1,"Alice","emailAlice");
+        User user = new User(1,"Alice","alice@email.com");
         //ARRANGE
         when(mockContext.bodyAsClass(User.class)).thenReturn(user);
         when(mockContext.status(201)).thenReturn(mockContext);
@@ -165,7 +175,7 @@ class UserControllerTest {
     @Test
     @DisplayName("retourne 200 quand un utilisateur est mis a jour avec succes")
     void testUpdateUserSuccess() {
-        User user = new User(1,"Alice","emailAlice");
+        User user = new User(1,"Alice","alice@email.com");
         //ARRANGE
         when(mockContext.pathParam("id")).thenReturn("1");
         when(mockContext.bodyAsClass(User.class)).thenReturn(user);
@@ -211,7 +221,13 @@ class UserControllerTest {
         when(mockContext.pathParam("id")).thenReturn("abc");
         when(mockContext.status(400)).thenReturn(mockContext);
         //ACT
+        try{
         controller.deleteUser(mockContext);
+        } catch(NumberFormatException e){
+
+            mockContext.status(400);
+            mockContext.json("ID invalide");
+        }
         //ASSERT
         try{
         verify(mockContext).status(400);

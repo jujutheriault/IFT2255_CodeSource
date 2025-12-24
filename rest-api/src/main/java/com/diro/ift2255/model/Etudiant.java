@@ -61,6 +61,11 @@ public class Etudiant extends User {
     public void setNom(String nom){
         this.nom = nom;
     }
+    /**
+     * Getter pour le nom de l'utilisateur
+     * @return le nom de l'etudiant
+     * 
+     */
     public String getNom(){
         return nom;
     }
