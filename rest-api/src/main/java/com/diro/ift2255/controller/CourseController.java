@@ -67,7 +67,14 @@ public class CourseController {
             return;
         } 
 
-        Optional<Course> course = service.getCourseById(id);
+        Map<String, String> queryParams = new HashMap<>();
+        ctx.queryParamMap().forEach((k, v) -> {
+            if (!v.isEmpty()) {
+                queryParams.put(k, v.get(0));
+            }
+        });
+
+        Optional<Course> course = service.getCourseById(id, queryParams);
 
         if (course.isPresent()) {
             Course c = course.get();

@@ -194,7 +194,15 @@ public class Cli {
             return;
         }
 
+        System.out.print("Inclure l'horaire? (y/n) : ");
+        String answer = scanner.nextLine().trim().toLowerCase();
+        // Inclure plusieurs cas de reponses
+        boolean includeSchedule = answer.equals("y") || answer.equals("oui") || answer.equals("o") || answer.equals("yes");
+
         String url = baseHost + "/courses/" + courseId;
+        if (includeSchedule) {
+            url += "?include_schedule=true";
+        }
 
         System.out.println("\n[Action] Consultation du cours...");
         System.out.println("URL cible : " + url);
