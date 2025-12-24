@@ -120,7 +120,7 @@ Enfin, l’application propose une fonctionnalité de comparaison de plusieurs c
     ```bash
     mvn clean test
 
-4. **Pour exécuter et intéragir avec le porjet**
+4. **Pour exécuter et intéragir avec le projet**
     ```bash
     mvn clean compile exec:java -Dexec.mainClass="com.diro.ift2255.Main"
 
