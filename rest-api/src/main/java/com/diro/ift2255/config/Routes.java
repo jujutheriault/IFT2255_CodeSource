@@ -1,6 +1,7 @@
 package com.diro.ift2255.config;
 
 import com.diro.ift2255.controller.CourseController;
+import com.diro.ift2255.controller.EnsembleController;
 import com.diro.ift2255.controller.UserController;
 import com.diro.ift2255.service.CourseService;
 import com.diro.ift2255.service.UserService;
@@ -15,18 +16,20 @@ import io.javalin.Javalin;
  * 
  */
 public class Routes {
-    /**
-     * Enregistre les routes de l'application Javalin
-     * @param app l'application Javalin
-     */
+
     public static void register(Javalin app) {
+
+        HttpClientApi httplientApi = new HttpClientApi();
+
+        CourseService courseService = new CourseService(httplientApi);
+        CourseController courseController = new CourseController(courseService);
+
         registerUserRoutes(app);
-        registerCourseRoutes(app);
+        registerCourseRoutes(app, courseController);
+        registerProgramRoutes(app, courseController);
+        createEnsembleRoutes(app);
     }
-    /**
-     * Enrtegistre les routes des utilisateurs
-     * @param app l'application Javalin
-     */
+
     private static void registerUserRoutes(Javalin app) {
         UserService userService = new UserService();
         UserController userController = new UserController(userService);
@@ -37,15 +40,32 @@ public class Routes {
         app.put("/users/{id}", userController::updateUser);
         app.delete("/users/{id}", userController::deleteUser);
     }
-    /**
-     * Enregistre les routes pour les cours
-     * @param app l'application Javalin
-     */
-    private static void registerCourseRoutes(Javalin app) {
-        CourseService courseService = new CourseService(new HttpClientApi());
-        CourseController courseController = new CourseController(courseService);
+
+    private static void registerCourseRoutes(Javalin app, CourseController courseController) {
 
         app.get("/courses", courseController::getAllCourses);
         app.get("/courses/{id}", courseController::getCourseById);
+        app.get("/courses/search/{recherche}", courseController::searchCourses); 
+        app.get("/courses/{id}/schedule", courseController::getCourseSchedule);
+
+    }
+
+    private static void registerProgramRoutes(Javalin app, CourseController courseController) {
+        // Route pour la recherche par programme
+        app.get("/programs", courseController::getCoursesByProgram);
+        app.get("/programs/semester/{semester}", courseController::getCoursesByProgramAndSemester);
+    }
+
+        // http://localhost:7070/courses/search/IFT?courses_sigle=ift1015,ift1025,esp1900  utilisation url
+        // http://localhost:7070/courses/search/java
+ 
+
+    private static void createEnsembleRoutes(Javalin app){
+        EnsembleController ensembleController = new EnsembleController();
+
+        app.get("/ensemble/create/{idEnsemble}", ensembleController::createEnsemble);
+        app.get("/ensemble/consult/{idEnsemble}", ensembleController::getEnsembleById);
+        app.get("/ensemble/{idEnsemble}/add/{courseId}", ensembleController::addCourse); 
+        app.get("/ensemble/{idEnsemble}/delete/{courseId}", ensembleController::deleteCourse);
     }
 }
