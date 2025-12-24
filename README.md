@@ -39,6 +39,17 @@ rest-api/
 └── pom.xml
 ```
 
+## Description du projet
+
+L’application de gestion d’horaire scolaire vise à aider les étudiants à prendre des décisions éclairées dans le choix de leurs cours.
+Elle leur permet de consulter des informations globales sur chaque cours, ainsi que des avis d’étudiants ayant déjà suivi ces cours, notamment sur la charge de travail, la moyenne de classe et le taux d’échec par rapport au nombre d’inscriptions.
+
+Ces informations sont accessibles via un moteur de recherche, avec la possibilité de filtrer et d’affiner les résultats selon différents critères.
+
+Enfin, l’outil offre une fonctionnalité de comparaison de plusieurs cours, afin de fournir une visualisation claire et synthétique et d’aider l’étudiant à faire le meilleur choix possible.
+
+
+
 ## Instructions d'installation
 
 
