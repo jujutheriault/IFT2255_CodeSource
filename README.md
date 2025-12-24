@@ -43,9 +43,50 @@ rest-api/
 
 L’application de gestion d’horaire scolaire vise à aider les étudiants à prendre des décisions éclairées dans le choix de leurs cours. Elle leur permet de consulter des informations complètes et structurées pour chaque cours, incluant la description, les prérequis et co-requis,ainsi que des avis d’étudiants ayant déjà suivi ces cours. Les étudiants ont également accès à des statistiques académiques agrégées, telles que la moyenne de classe, le nombre d’inscriptions et le taux d’échec.
 
-Il y a aussi la possibilité de filtrer et d’affiner les résultats selon différents critères, notamment le sigle, le titre, la description ou le trimestre. L’outil permet également aux étudiants de vérifier leur éligibilité à un cours en fonction de leur cycle d’études et des exigences académiques.
+Il y a aussi la possibilité d’affiner les résultats selon différents critères, notamment le sigle, le titre, la description ou le trimestre. L’outil permet également aux étudiants de vérifier leur éligibilité à un cours en fonction de leur cycle d’études et des exigences académiques.
 
 Enfin, l’application propose une fonctionnalité de comparaison de plusieurs cours, permettant de visualiser clairement les différences entre les options possibles et d’évaluer la charge de travail globale d’une combinaison de cours, afin d’aider l’étudiant à faire le meilleur choix possible.
+
+## Liste des fonctionnalités de l'application par rôle
+**Étudiant**
+- **Rechercher des cours** avec plusieurs critères :
+  - Par **sigle** (ex: IFT2255)
+  - Par **nom** (ex: génie logiciel)
+  - Par **description** (mots-clés : ajax, java, algorithmes, etc.)
+  - Par **trimestre** (H25, A24, E24)
+- **Consulter les informations détaillées** d'un cours :
+  - Description complète
+  - Nombre de crédits
+  - Prérequis et corequis
+  - Sessions disponibles (Automne, Hiver, Été)
+    
+- **Visualiser les résultats agrégés** :
+  - Moyenne de classe
+  - Score moyen sur 5.0
+  - Nombre de participants total
+  - Données sur plusieurs trimestres
+
+**Consulter les avis** d'étudiants ayant suivi le cours :
+- Note moyenne des étudiants (sur 5 étoiles)
+- La charge de travail réelle
+- La qualité de l'enseignement
+- La difficulté du cours
+**Poster des avis sur des cours déjà suivis**
+  
+**Vérifier automatiquement** si vous êtes éligible à un cours selon :
+  - Votre cycle d'études (Baccalauréat, Maîtrise, Doctorat)
+  - Le cycle requis pour le cours
+
+**Comparer jusqu'à plusieurs cours**
+- **Visualisation synthétique** incluant :
+  - Sigles et noms des cours
+  - Nombre de crédits de chaque cours
+  - **Charge de travail totale** (somme des crédits)
+    
+**Afficher l'horaire**
+
+**Bot Discord**
+**Collecter et soumettre des avis étudiants à l'API REST**
 
 
 ## Instructions d'installation
