@@ -65,11 +65,14 @@ public class CourseController {
         if (!validateCourseId(id)) {
             ctx.status(400).json(ResponseUtil.formatError("Le paramètre id n'est pas valide."));
             return;
-        }
+        } 
 
         Optional<Course> course = service.getCourseById(id);
+
         if (course.isPresent()) {
-            ctx.json(course.get());
+            Course c = course.get();
+            c.setAggregates();        // Charger les résultats agrégés depuis le fichier CSV
+            ctx.json(c);
         } else {
             ctx.status(404).json(ResponseUtil.formatError("Aucun cours ne correspond à l'ID: " + id));
         }

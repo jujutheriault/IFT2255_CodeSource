@@ -36,6 +36,7 @@ public class Cli {
             System.out.println("2. Manipuler un ensemble de cours");
             System.out.println("3. Consulter la liste de cours d'un programme");
             System.out.println("4. Consulter la liste de cours d'un trimestre");
+            System.out.println("5. Consulter un cours par ID");
             System.out.println("0. Quitter");
             System.out.print("> ");
 
@@ -53,6 +54,9 @@ public class Cli {
                     break;
                 case "4":
                     cliTrimestre(scanner);
+                    break;
+                case "5":
+                    cliCourseById(scanner);
                     break;
                 case "0":
                     System.out.println("Fermeture du CLI...");
@@ -176,6 +180,28 @@ public class Cli {
         httpGetAndPrint(url);
 
     }
+
+    /**
+ * Consultation d'un cours par son ID
+ * @param scanner scanner pour lire l'entrée utilisateur
+ */
+    private void cliCourseById(Scanner scanner) {
+        System.out.print("Entrez l'ID du cours (ex: IFT2255) : ");
+        String courseId = scanner.nextLine().trim().toUpperCase();
+
+        if (courseId.isEmpty()) {
+            System.out.println("ID invalide.");
+            return;
+        }
+
+        String url = baseHost + "/courses/" + courseId;
+
+        System.out.println("\n[Action] Consultation du cours...");
+        System.out.println("URL cible : " + url);
+
+        httpGetAndPrint(url);
+    }
+
 
     private void httpGetAndPrint(String url) {
     try {

@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+ import java.nio.file.*;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Course {
@@ -46,6 +48,12 @@ public class Course {
     private String cycle;
     private Integer chargeTravail;
 
+    // Champ pour les résultats agrégés
+    private String moyenne;
+    private Double score;
+    private int participants;
+    private int trimestres; 
+
     public Course() {}
 
     public Course(String id, String name) {
@@ -53,7 +61,7 @@ public class Course {
         this.name = name;
     }
 
-    // Getters/Setters 
+    // Getters/Setters API Planifium
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
@@ -96,4 +104,26 @@ public class Course {
 
     public Integer getChargeTravail() { return chargeTravail; }
     public void setChargeTravail(Integer chargeTravail) { this.chargeTravail = chargeTravail; }
+
+    // Getters/Setters résultats agrégés
+    public String getMoyenne() { return moyenne; }
+    public void setMoyenne(String moyenne) { this.moyenne = moyenne; }          
+    public Double getScore() { return score; }
+    public void setScore(Double score) { this.score = score; }
+    public int getParticipants() { return participants; }
+    public void setParticipants(int participants) { this.participants = participants; }
+    public int getTrimestres() { return trimestres; }
+    public void setTrimestres(int trimestres) { this.trimestres = trimestres; }
+
+    // Setters pour les résultats agrégés à partir d'un fichier CSV
+    public void setAggregates() {
+        CourseAggregates aggregates = CourseAggregates.loadFromCsvResource(this.id);
+
+        if (aggregates != null) {
+            this.moyenne = aggregates.getMoyenne();
+            this.score = aggregates.getScore();
+            this.participants = aggregates.getParticipants();
+            this.trimestres = aggregates.getTrimestres();
+        }
+    }
 }
