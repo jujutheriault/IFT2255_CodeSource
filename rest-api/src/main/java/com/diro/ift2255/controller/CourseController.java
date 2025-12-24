@@ -74,7 +74,13 @@ public class CourseController {
             }
         });
 
-        Optional<Course> course = service.getCourseById(id, queryParams);
+        Optional<Course> course;
+        // Differents appels si pas de query params
+        if (queryParams.isEmpty()) {
+            course = service.getCourseById(id);
+        } else {
+            course = service.getCourseById(id, queryParams);
+        }
 
         if (course.isPresent()) {
             Course c = course.get();
