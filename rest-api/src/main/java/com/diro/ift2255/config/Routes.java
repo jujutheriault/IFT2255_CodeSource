@@ -1,8 +1,10 @@
 package com.diro.ift2255.config;
 
+import com.diro.ift2255.controller.AvisController;
 import com.diro.ift2255.controller.CourseController;
 import com.diro.ift2255.controller.EnsembleController;
 import com.diro.ift2255.controller.UserController;
+import com.diro.ift2255.service.AvisService;
 import com.diro.ift2255.service.CourseService;
 import com.diro.ift2255.service.UserService;
 import com.diro.ift2255.util.HttpClientApi;
@@ -32,6 +34,7 @@ public class Routes {
         registerCourseRoutes(app, courseController);
         registerProgramRoutes(app, courseController);
         createEnsembleRoutes(app);
+        registerAvisRoutes(app);
     }
     /**
      * enregistrement des routes de l'utilisateur
@@ -86,5 +89,14 @@ public class Routes {
         app.get("/ensemble/consult/{idEnsemble}", ensembleController::getEnsembleById);
         app.get("/ensemble/{idEnsemble}/add/{courseId}", ensembleController::addCourse); 
         app.get("/ensemble/{idEnsemble}/delete/{courseId}", ensembleController::deleteCourse);
+    }
+
+    private static void registerAvisRoutes(Javalin app) {
+        AvisService avisService = new AvisService("data/avis.ndjson");
+        AvisController avisController = new AvisController(avisService);
+
+        app.post("/avis", avisController::createAvis);
+        app.get("/avis/{sigle}", avisController::getAvisBySigle);
+        app.get("/avis/{sigle}/resume", avisController::getResume);
     }
 }
