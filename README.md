@@ -101,25 +101,6 @@ Enfin, l’application propose une fonctionnalité de comparaison de plusieurs c
 **Bot Discord**
 - **Collecter et soumettre des avis étudiants à l'API REST**
 
-
-## Instructions d'installation
-
-1. **Cloner le dépôt**
-   ```bash
-   git clone https://github.com/jujutheriault/IFT2255_Devoir2.git
-   cd rest-api
-
-2. **Vérifier l'installation de Maven et Java**
-   ```bash
-   java -version
-   mvn -version
-   
-- Si ce n'est pas installé, installez-le selon les instruction d'installation
-
-3. ***Installer les dépendances de maven***
-    ```bash
-    mvn clean install
-
 ## Évaluation (tests)
 
 **1. Récupération de tous les utilisateurs (UserController.getAllUsers())**
@@ -179,6 +160,24 @@ testAddCourseInvalidCourseId - ID cours invalide (400)
 
 Description : Vérifie l'ajout d'un cours à un ensemble existant, la gestion d'erreur si l'ensemble n'existe pas, et la validation de l'ID du cours (minimum 6 caractères).
 
+
+## Instructions d'installation
+
+1. **Cloner le dépôt**
+   ```bash
+   git clone https://github.com/jujutheriault/IFT2255_Devoir2.git
+   cd rest-api
+
+2. **Vérifier l'installation de Maven et Java**
+   ```bash
+   java -version
+   mvn -version
+   
+- Si ce n'est pas installé, installez-le selon les instruction d'installation
+
+3. ***Installer les dépendances de maven***
+    ```bash
+    mvn clean install
 
 
 ## Instructions d'exécution et de test
