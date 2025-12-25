@@ -104,7 +104,7 @@ Enfin, l’application propose une fonctionnalité de comparaison de plusieurs c
 ## Évaluation (tests)
 Pour chaque test, nous définissons les entrées, les sorties attendues et les effets de bord sur le système. Les tableaux ci-dessous présentent l'oracle de 12 de nos tests unitaires.
 
-##**Tests dans UserControllerTest.java**
+**Tests dans UserControllerTest.java**
 
 | **Entrée** | **Sortie attendue** | **État après l'appel** | **Type** | **Description** |
 |:-----------|:-------------------|:----------------------|:---------|:----------------|
@@ -118,7 +118,7 @@ Pour chaque test, nous définissons les entrées, les sorties attendues et les e
 
 ---
 
-##**Tests dans EnsembleControllerTest.java**
+**Tests dans EnsembleControllerTest.java**
 
 | **Entrée** | **Sortie attendue** | **État après l'appel** | **Type** | **Description** |
 |:-----------|:-------------------|:----------------------|:---------|:----------------|
