@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.HashSet;
+import java.util.Set;
+
 
 import com.diro.ift2255.model.Course;
 import com.diro.ift2255.model.RechercheCours;
@@ -11,6 +14,7 @@ import com.diro.ift2255.model.User;
 import com.diro.ift2255.service.CourseService;
 import com.diro.ift2255.util.ResponseUtil;
 import com.fasterxml.jackson.databind.JsonNode;
+
 
 import io.javalin.http.Context;
 
@@ -163,14 +167,23 @@ public class CourseController {
             return;
         }
 
-        List<Course> courses = service.getCoursesByProgramAndSemester(programId, semester);
+        try {
+            List<Course> courses = service.getCoursesByProgramAndSemester(programId, semester);
 
-        if (courses.isEmpty()) {
-            ctx.status(404).json(ResponseUtil.formatError("Aucun cours trouvé pour ce programme et ce trimestre."));
-            return;
+            if (courses.isEmpty()) {
+                ctx.status(404).json(ResponseUtil.formatError(
+                    "Aucun cours n'est offert pour ce programme au trimestre " + semesterRaw.toUpperCase() + "."
+                ));
+                return;
+            }
+
+            ctx.status(200).json(courses);
+
+        } catch (RuntimeException e) {
+            ctx.status(400).json(ResponseUtil.formatError(
+                "Requête invalide. Vérifie que programs_list est un numéro de programme valide (ex: 117510)."
+            ));
         }
-
-        ctx.status(200).json(courses);
     }
 
 
@@ -200,6 +213,15 @@ public class CourseController {
         return queryParams;
     }
 
+    /**
+     * Récupère l'horaire d'un cours pour un trimestre donné.
+     * <p>
+     * Cette méthode permet de consulter les horaires d'un cours spécifique
+     * en fonction du trimestre fourni en paramètre de requête. Le trimestre
+     * est d'abord validé et normalisé, puis l'horaire correspondant est
+     * récupéré via le service.
+     * @param ctx Contexte Javalin représentant la requête et la réponse HTTP
+     */
     public void getCourseSchedule(Context ctx) {
         String id = ctx.pathParam("id");
 
@@ -232,7 +254,7 @@ public class CourseController {
 
         Course course = courseOpt.get();
 
-    // schedules peut être null ou vide si le cours n’est pas offert à ce trimestre
+        // schedules peut être null ou vide si le cours n’est pas offert à ce trimestre
         if (course.getSchedules() == null || course.getSchedules().isEmpty()) {
             ctx.status(404).json(ResponseUtil.formatError(
                 "Aucun horaire disponible pour " + id + " au trimestre " + semesterRaw.toUpperCase()
@@ -241,10 +263,66 @@ public class CourseController {
         return;
         }
 
-    // Option 1 (simple): retourner juste schedules
         ctx.status(200).json(course.getSchedules());
-
-    // Option 2 (si tu préfères retourner le cours complet):
-    // ctx.status(200).json(course);
     }
+
+    /**
+     * Vérifie l'éligibilité d'un étudiant à un cours donné.
+     * @param ctx Contexte Javalin représentant la requête et la réponse HTTP
+     */
+    public void checkEligibility(Context ctx) {
+        String courseId = ctx.pathParam("id").trim().toUpperCase();
+
+        // Javalin chez toi: queryParam(String) seulement
+        String completedParam = ctx.queryParam("completed");
+        if (completedParam == null) completedParam = "";
+
+        Set<String> completed = parseCompleted(completedParam);
+
+        if (courseId.isEmpty()) {
+            ctx.status(400).json(ResponseUtil.formatError("ID de cours invalide."));
+            return;
+        }
+
+        Optional<Course> opt = service.getCourseById(courseId);
+        if (opt.isEmpty()) {
+            ctx.status(404).json(ResponseUtil.formatError("Cours introuvable: " + courseId));
+            return;
+        }
+
+        Course course = opt.get();
+        List<String> missing = course.missingPrerequisites(completed);
+
+        Map<String, Object> res = new HashMap<>();
+        res.put("course_id", courseId);
+        res.put("eligible", missing.isEmpty());
+        res.put("missing_prerequisites", missing);
+
+        // Optionnel (pratique)
+        res.put("prerequisite_courses", course.getPrerequisiteCourses());
+        res.put("requirement_text", course.getRequirementText());
+
+        ctx.json(res);
+    }
+
+    /**
+     * Analyse et convertit une chaîne représentant une liste de cours complétés
+     * en un ensemble de sigles normalisés.
+     * L'utilisation d'un {@link Set} permet d'éliminer automatiquement les doublons.
+     *
+     * @param raw Chaîne contenant la liste des cours complétés par l'étudiant
+     * @return Un ensemble ({@link Set}) de sigles de cours complétés, normalisés
+     */
+    private Set<String> parseCompleted(String raw) {
+        Set<String> out = new HashSet<>();
+        if (raw == null || raw.isBlank()) return out;
+
+        // split virgules/espaces
+        for (String p : raw.toUpperCase().split("[,\\s]+")) {
+            String s = p.trim();
+            if (!s.isEmpty()) out.add(s);
+        }
+        return out;
+    }
+
 }

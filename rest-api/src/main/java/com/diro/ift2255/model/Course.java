@@ -9,6 +9,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.util.Set;
+import java.util.ArrayList;
+
+
+
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -248,9 +253,12 @@ public void setSchedules(JsonNode schedules) { this.schedules = schedules; }
      */
     public void setTrimestres(int trimestres) { this.trimestres = trimestres; }
 
-    // Setters pour les résultats agrégés à partir d'un fichier CSV
     /**
-     * Setter pour les resultats agreges a partir d'un fichier CSV
+     * Charge et assigne les résultats agrégés d'un cours à partir d'une source CSV.
+     * Si aucune donnée agrégée n'est trouvée pour le cours, les champs
+     * restent inchangés.
+     *
+     * @see CourseAggregates
      */
     public void setAggregates() {
         CourseAggregates aggregates = CourseAggregates.loadFromCsvResource(this.id);
@@ -262,4 +270,33 @@ public void setSchedules(JsonNode schedules) { this.schedules = schedules; }
             this.trimestres = aggregates.getTrimestres();
         }
     }
+
+    /**
+     * Détermine la liste des prérequis manquants pour un cours donné.
+     * Si aucun prérequis n'est défini pour le cours ou si tous les prérequis
+     * ont été complétés, la liste retournée est vide.
+     *
+     * @param completedCourses Ensemble des sigles de cours déjà complétés
+     *                         par l'étudiant
+     * @return Une liste des sigles de cours prérequis qui n'ont pas encore
+     *         été complétés
+     */
+    public List<String> missingPrerequisites(Set<String> completedCourses) {
+        if (completedCourses == null) completedCourses = Set.of();
+
+        if (prerequisiteCourses == null || prerequisiteCourses.isEmpty()) {
+            return List.of();
+        }
+
+        List<String> missing = new ArrayList<>();
+        for (String p : prerequisiteCourses) {
+            if (p == null) continue;
+            String sigle = p.trim().toUpperCase();
+            if (!sigle.isEmpty() && !completedCourses.contains(sigle)) {
+                missing.add(sigle);
+            }
+        }
+        return missing;
+    }
+
 }
