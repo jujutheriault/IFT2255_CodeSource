@@ -120,6 +120,66 @@ Enfin, l’application propose une fonctionnalité de comparaison de plusieurs c
     ```bash
     mvn clean install
 
+## Évaluation (tests)
+
+**1. Récupération de tous les utilisateurs (UserController.getAllUsers())**
+
+Test : testGetAllUsers
+Description : Vérifie que la liste complète des utilisateurs est retournée en JSON lorsque le service contient des utilisateurs.
+
+
+**2. Récupération d'un utilisateur par ID (UserController.getUserById())**
+
+Tests :
+
+testGetUserByIdSuccess - Utilisateur trouvé
+testGetUserByIdNotFound - Utilisateur inexistant (404)
+testGetUserInvalidId - ID invalide (400)
+
+
+Description : Vérifie la récupération d'un utilisateur spécifique, la gestion d'erreur 404 si l'utilisateur n'existe pas, et la validation de l'ID (doit être numérique).
+
+
+**3. Création d'un utilisateur (UserController.createUser())**
+
+Test : testCreateUserSuccess
+Description : Vérifie qu'un nouvel utilisateur est correctement créé et que le status HTTP 201 (Created) est retourné.
+
+
+**4. Suppression d'un utilisateur (UserController.deleteUser())**
+
+Tests :
+
+testDeleteUserSuccess - Suppression réussie
+testDeleteUserInvalidId - ID invalide (400)
+
+
+Description : Vérifie la suppression d'un utilisateur existant avec status 204 (No Content), et la gestion d'erreur pour un ID non numérique.
+
+
+**5. Création d'un ensemble de cours (EnsembleController.createEnsemble())**
+
+Tests :
+
+testCreateEnsembleAlreadyExists (1ère création) - Succès
+testCreateEnsembleAlreadyExists (2ème création) - Déjà existant (400)
+
+
+Description : Vérifie la création d'un nouvel ensemble avec status 201, et refuse la création d'un ensemble déjà existant avec status 400.
+
+
+**6. Ajout d'un cours à un ensemble (EnsembleController.addCourse())**
+
+Tests :
+
+testAddCourseSuccess - Cours ajouté avec succès
+testAddCourseToNonExistentEnsemble - Ensemble inexistant (404)
+testAddCourseInvalidCourseId - ID cours invalide (400)
+
+
+Description : Vérifie l'ajout d'un cours à un ensemble existant, la gestion d'erreur si l'ensemble n'existe pas, et la validation de l'ID du cours (minimum 6 caractères).
+
+
 
 ## Instructions d'exécution et de test
 1. **Pour compiler le projet:**
