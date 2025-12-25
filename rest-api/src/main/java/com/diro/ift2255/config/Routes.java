@@ -16,7 +16,11 @@ import io.javalin.Javalin;
  * 
  */
 public class Routes {
-
+    /**
+     * 
+     * enregistrement de l'applicatino
+     * @param app une application javalin
+     */
     public static void register(Javalin app) {
 
         HttpClientApi httplientApi = new HttpClientApi();
@@ -29,7 +33,10 @@ public class Routes {
         registerProgramRoutes(app, courseController);
         createEnsembleRoutes(app);
     }
-
+    /**
+     * enregistrement des routes de l'utilisateur
+     * @param app une application javalin
+     */
     private static void registerUserRoutes(Javalin app) {
         UserService userService = new UserService();
         UserController userController = new UserController(userService);
@@ -40,7 +47,11 @@ public class Routes {
         app.put("/users/{id}", userController::updateUser);
         app.delete("/users/{id}", userController::deleteUser);
     }
-
+    /**
+     * enregistrement des routes pour les cours
+     * @param app une application javalin
+     * @param courseController le controleur pour les cours
+     */
     private static void registerCourseRoutes(Javalin app, CourseController courseController) {
 
         app.get("/courses", courseController::getAllCourses);
@@ -49,7 +60,11 @@ public class Routes {
         app.get("/courses/{id}/schedule", courseController::getCourseSchedule);
 
     }
-
+    /**
+     * enregistrement des routes pour les programmes 
+     * @param app une application javalin
+     * @param courseController le controleur des cours
+     */
     private static void registerProgramRoutes(Javalin app, CourseController courseController) {
         // Route pour la recherche par programme
         app.get("/programs", courseController::getCoursesByProgram);
@@ -59,7 +74,10 @@ public class Routes {
         // http://localhost:7070/courses/search/IFT?courses_sigle=ift1015,ift1025,esp1900  utilisation url
         // http://localhost:7070/courses/search/java
  
-
+    /**
+     * routes pour la creation d'ensembles de cours
+     * @param app une application javalin
+     */
     private static void createEnsembleRoutes(Javalin app){
         EnsembleController ensembleController = new EnsembleController();
 
