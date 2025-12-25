@@ -102,6 +102,7 @@ Enfin, l’application propose une fonctionnalité de comparaison de plusieurs c
 - **Collecter et soumettre des avis étudiants à l'API REST**
 
 ## Évaluation (tests)
+Pour chaque test, nous définissons les entrées, les sorties attendues et les effets de bord sur le système. Les tableaux ci-dessous présentent l'oracle de 12 de nos tests unitaires.
 
 ## **Tableau 1 : UserController**
 
