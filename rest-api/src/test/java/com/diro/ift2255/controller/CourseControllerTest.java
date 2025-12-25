@@ -373,7 +373,6 @@ public class CourseControllerTest {
         }
     }
 
-
     @AfterAll
     static void printFooter() {
         System.out.println("\n" + "=".repeat(80));
