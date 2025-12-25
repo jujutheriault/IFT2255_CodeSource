@@ -15,7 +15,6 @@ import com.diro.ift2255.service.CourseService;
 import com.diro.ift2255.util.ResponseUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 
-
 import io.javalin.http.Context;
 
 
