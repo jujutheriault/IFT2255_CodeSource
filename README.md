@@ -159,6 +159,34 @@ testAddCourseInvalidCourseId - ID cours invalide (400)
 
 - Description : Vérifie l'ajout d'un cours à un ensemble existant, la gestion d'erreur si l'ensemble n'existe pas, et la validation de l'ID du cours (minimum 6 caractères).
 
+##Oracle de tests
+
+
+## **Tableau 1 : UserController**
+
+| **Entrée** | **Sortie attendue** | **État après l'appel** | **Type** | **Description** |
+|:-----------|:-------------------|:----------------------|:---------|:----------------|
+| **Test 1 : `getAllUsers()`**<br>`mockService.getAllUsers()` retourne<br>`[User(1,"Alice","alice@email.com"),`<br>`User(2,"Bob","bob@email.com")]` | Liste JSON :<br>`[{"id":1,"name":"Alice",...},`<br>`{"id":2,"name":"Bob",...}]`<br>Status HTTP 200 | Aucun changement<br>(lecture seule) | **Succès** | Si le service retourne une liste d'utilisateurs, le contrôleur retourne cette liste en JSON |
+| **Test 2 : `getUserById()` - Succès**<br>`pathParam("id") = "1"`<br>`mockService.getUserById(1)` retourne<br>`Optional.of(User(1,"Alice","alice@email.com"))` | JSON :<br>`{"id":1,"name":"Alice","email":"alice@email.com"}`<br>Status HTTP 200 | Aucun changement<br>(lecture seule) | **Succès** | Si l'utilisateur existe dans le système, retourne l'utilisateur en JSON |
+| **Test 3 : `getUserById()` - Not Found**<br>`pathParam("id") = "1"`<br>`mockService.getUserById(1)` retourne<br>`Optional.empty()` | JSON :<br>`{"error":"Aucun utilisateur ne correspond à l'ID: 1"}`<br>Status HTTP 404 | Aucun changement | **Échec** | Si l'utilisateur n'existe pas, retourne status 404 avec message d'erreur |
+| **Test 4 : `getUserById()` - ID invalide**<br>`pathParam("id") = "abc"` | JSON :<br>`{"error":"ID invalide"}`<br>Status HTTP 400 | Aucun changement<br>`service.getUserById()` non appelé | **Échec** | Si l'ID n'est pas numérique, lance `NumberFormatException`, retourne status 400 |
+| **Test 5 : `createUser()`**<br>Body HTTP :<br>`User(null,"Alice","alice@email.com")` | JSON de l'utilisateur créé<br>Status HTTP 201 | `service.createUser(user)` appelé<br>Utilisateur ajouté au système | **Succès** | Si les données sont valides, crée l'utilisateur et retourne status 201 |
+| **Test 6 : `deleteUser()` - Succès**<br>`pathParam("id") = "1"` | Aucun contenu<br>Status HTTP 204 | `service.deleteUser(1)` appelé<br>Utilisateur ID=1 supprimé | **Succès** | Si l'ID est valide, supprime l'utilisateur et retourne status 204 |
+| **Test 7 : `deleteUser()` - ID invalide**<br>`pathParam("id") = "abc"` | JSON :<br>`{"error":"ID invalide"}`<br>Status HTTP 400 | Aucun changement<br>`service.deleteUser()` non appelé | **Échec** | Si l'ID n'est pas numérique, retourne status 400, aucune suppression |
+
+---
+
+## **Tableau 2 : EnsembleController**
+
+| **Entrée** | **Sortie attendue** | **État après l'appel** | **Type** | **Description** |
+|:-----------|:-------------------|:----------------------|:---------|:----------------|
+| **Test 1 : `createEnsemble()` - Création**<br>`pathParam("idEnsemble") = "ENS-1"`<br>(ensemble n'existe pas) | JSON :<br>`{"id":"ENS-1","list":[]}`<br>Status HTTP 201 | `ensembles = {"ENS-1" -> EnsembleCours(id="ENS-1", list=[])}` | **Succès** | Si l'ensemble n'existe pas, le crée avec une liste vide et retourne status 201 |
+| **Test 2 : `createEnsemble()` - Déjà existant**<br>`pathParam("idEnsemble") = "ENS-1"`<br>(ensemble existe déjà) | JSON :<br>`{"error":"Ensemble déjà existant"}`<br>Status HTTP 400 | `ensembles` inchangé<br>(contient déjà "ENS-1") | **Échec** | Si l'ensemble existe déjà, refuse la création et retourne status 400 |
+| **Test 3 : `addCourse()` - Ensemble inexistant**<br>`pathParam("idEnsemble") = "ENS-NonExistent"`<br>`pathParam("courseId") = "IFT-1015"` | JSON :<br>`{"error":"Ensemble non trouvé"}`<br>Status HTTP 404 | Aucun changement | **Échec** | Si l'ensemble n'existe pas, retourne status 404, aucun cours ajouté |
+| **Test 4 : `addCourse()` - ID cours invalide**<br>`pathParam("idEnsemble") = "ENS-1"`<br>`pathParam("courseId") = "A"`<br>(< 6 caractères) | JSON :<br>`{"error":"ID du cours invalide"}`<br>Status HTTP 400 | Ensemble "ENS-1" inchangé<br>`list = []` | **Échec** | Si l'ID du cours est trop court (< 6 car.), retourne status 400 |
+| **Test 5 : `addCourse()` - Succès**<br>`pathParam("idEnsemble") = "ENS-1"`<br>`pathParam("courseId") = "IFT-1015"`<br>(≥ 6 caractères) | JSON :<br>`{"id":"ENS-1","list":["IFT-1015"]}`<br>Status HTTP 200 | `ensembles.get("ENS-1").getList() = ["IFT-1015"]` | **Succès** | Si l'ensemble existe et l'ID cours valide, ajoute le cours et retourne ensemble mis à jour |
+
+
 
 ## Instructions d'installation
 
