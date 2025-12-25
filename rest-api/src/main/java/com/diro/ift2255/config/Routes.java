@@ -58,6 +58,7 @@ public class Routes {
         app.get("/courses/{id}", courseController::getCourseById);
         app.get("/courses/search/{recherche}", courseController::searchCourses); 
         app.get("/courses/{id}/schedule", courseController::getCourseSchedule);
+        app.get("/courses/{id}/eligibility", courseController::checkEligibility);
 
     }
     /**
