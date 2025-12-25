@@ -23,6 +23,10 @@ intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 COURSE_RE = re.compile(r"\b([A-Z]{3}\d{4})\b")
+SEM_RE = re.compile(r"\b(?:trimestre|sem|session)?\s*([HAEhae]\d{2})\b", re.IGNORECASE)
+DIFF_RE = re.compile(r"\b(?:d|diff|difficulte|difficulté)\s*(?:[:=]\s*|\s+)([1-5])\b", re.IGNORECASE)
+WORK_RE = re.compile(r"\b(?:t|travail|charge|work)\s*(?:[:=]\s*|\s+)([1-5])\b", re.IGNORECASE)
+
 
 PROF_NAME_RE = re.compile(
     r"\b(?:prof(?:esseur)?|dr\.?|doctor|teacher|instructor)\s+"
@@ -98,6 +102,35 @@ def group_by_course(flat_records):
         })
     return grouped
 
+def parse_diff_work(text: str):
+    d = DIFF_RE.search(text or "")
+    w = WORK_RE.search(text or "")
+    diff = int(d.group(1)) if d else None
+    work = int(w.group(1)) if w else None
+    return diff, work
+
+def parse_semester(text: str):
+    m = SEM_RE.search(text or "")
+    return m.group(1).upper() if m else None
+
+def semester_to_year(semester: str):
+    # A25 -> 2025
+    yy = int(semester[1:])
+    return 2000 + yy
+
+#def infer_trimester_and_year():
+    #now = datetime.datetime.now()
+   # m, y = now.month, now.year
+    # Jan-Apr = H, May-Aug = E, Sep-Dec = A
+    #if 1 <= m <= 4:
+    #    tri = f"H{str(y)[2:]}"
+    #elif 5 <= m <= 8:
+    #    tri = f"E{str(y)[2:]}"
+    #else:
+    #    tri = f"A{str(y)[2:]}"
+    #return tri, y
+
+
 # la fonciton post_opinion_to_api est celle qui poste à l'API ================
 
 async def post_opinion_to_api(record: dict):
@@ -107,7 +140,6 @@ async def post_opinion_to_api(record: dict):
     dans notre cas, on envoie cahque opinion à L'API Javalin le code qu on avait définit 
     dans le projet web_api.
     """
-
     if not OPINION_API_URL:
         print("OPINION_API_URL is not set, skipping POST.")
         return
@@ -115,11 +147,16 @@ async def post_opinion_to_api(record: dict):
     try:
         async with aiohttp.ClientSession() as session:
             async with session.post(OPINION_API_URL, json=record, timeout=5) as resp:
+                body = await resp.text()
+                print("[OPINION API] status =", resp.status)
+                print("[OPINION API] body =", body)
+
                 if resp.status >= 400:
-                    body = await resp.text()
                     print(f"[OPINION API] Error {resp.status}: {body}")
+
     except Exception as e:
         print("[OPINION API] Exception while posting opinion:", e)
+
 
 ############################################################################# 
 
@@ -133,20 +170,62 @@ async def on_message(message: discord.Message):
         return
 
     text = (message.content or "").strip()
-    if not text or not looks_like_opinion(text):
+    if not text:
         return
 
-    recs = record_from_message(message)
-    if not recs:
+    courses = extract_course_codes(text)
+    if not courses:
         return
+
+    diff, work = parse_diff_work(text)
+    semester = parse_semester(text)  
+
+    if semester is None or diff is None or work is None:
+        await message.reply(
+            "⚠️ Format d’avis non valide.\n"
+            "Veuillez écrire votre avis suivant le format suivant:\n"
+            "- `<sigle du cours> <trimestre> diff <1–5> travail <1–5> prof <nom>`\n"
+            "Exemples:\n"
+            "- `IFT2255 A25 diff 4 travail 5 prof Tremblay`\n"
+            "- `IFT2255 H25 difficulte:3 charge:4`\n"
+            "\n"
+            "Règles: sigle + trimestre (A25/H25/E24) + diff(1-5) + travail(1-5)."
+            "\n"
+            "Note : Les avis partagés reflètent uniquement l’expérience personnelle des étudiants."
+
+        )
+        return
+
+
+    prof = extract_professor_name(text) or ""
+    trimestre = semester              # ex: A25
+    annee = semester_to_year(semester) # ex: 2025
 
     pathlib.Path("exports").mkdir(exist_ok=True)
-    with open("exports/opinions_stream.ndjson", "a", encoding="utf-8") as f:
-        for r in recs:
-            f.write(json.dumps(r, ensure_ascii=False) + "\n")
 
-    for r in recs:
-        await post_opinion_to_api(r)
+    print("Message reçu:", text)
+    print("Cours détectés:", courses, "diff/work:", diff, work)
+
+
+    for sigle in courses:
+        avis_payload = {
+            "sigle": sigle,
+            "session": sigle,
+            "trimestre": trimestre,
+            "annee": annee,
+            "nivDifficulte": diff,
+            "volumeTravail": work,
+            "professeur": prof,
+            "nombreAvis": 1
+        }
+
+        # Trace locale du bot (fichier)
+        with open("exports/avis_stream.ndjson", "a", encoding="utf-8") as f:
+            f.write(json.dumps(avis_payload, ensure_ascii=False) + "\n")
+
+        # POST vers ton API Javalin
+        await post_opinion_to_api(avis_payload)
+
 
 @bot.event
 async def on_ready():

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Avis {
+    private String sigle;
     private String session;
     private String trimestre;
     private int annee;
@@ -19,6 +20,7 @@ public class Avis {
     public Avis() {}
     /**
     *Constructeur d'avis avec parametres
+    *@param sigle le sigle de programme ou cours
     *@param session la session relative a l'avis
     *@param trimestre le trimestre relatif a l'avis
     *@param annee l'anne relative a l'avis
@@ -27,8 +29,9 @@ public class Avis {
     *@param professeur le nom du prfesseur donnant le cours
     *@param nombreAvis le score attribue au cours
     */
-    public Avis(String session, String trimestre, int annee, int nivDifficulte,
+    public Avis(String sigle, String session, String trimestre, int annee, int nivDifficulte,
                 int volumeTravail, String professeur, int nombreAvis){
+        this.sigle = sigle;           
         this.session = session;
         this.trimestre = trimestre;
         this.annee = annee;
@@ -39,6 +42,21 @@ public class Avis {
     }
 
     // Getters et Setters
+    /**
+     * Getter pour le sigle 
+     * @return sigle du programme/cours
+     */
+    public String getSigle() {
+        return sigle;
+    }
+
+    /**
+     * Setter pour le sigle 
+     * @param sigle - sigle du programme/cours
+     */
+    public void setSigle(String sigle) {
+        this.sigle = sigle;
+    }
 
     /**
      * Getter pour la session

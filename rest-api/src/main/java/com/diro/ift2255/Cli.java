@@ -14,6 +14,12 @@ public class Cli {
     private final HttpClient httpClient = HttpClient.newBuilder()
         .connectTimeout(Duration.ofSeconds(5))
         .build();
+    
+    private String currentProgramID = null;
+    private String currentSemester = "H26";
+    private String currentEnsembleId = null;
+    private String lastUrl = null;
+    
     /**
      * Constructeur du CLI
      * @param baseHost
