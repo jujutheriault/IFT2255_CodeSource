@@ -20,7 +20,10 @@ public class CourseService {
         this.clientApi = clientApi;
     }
 
-    /** Fetch all courses */
+    /** recupere tous les cours 
+     * @param queryParams les parametres de requete
+     * @return une liste de cours 
+    */
     public List<Course> getAllCourses(Map<String, String> queryParams) {
         Map<String, String> params = (queryParams == null) ? Collections.emptyMap() : queryParams;
 
@@ -30,12 +33,19 @@ public class CourseService {
         return clientApi.get(uri, new TypeReference<List<Course>>() {});
     }
 
-    /** Fetch a course by ID */
+    /** recupere un cours par son ID
+     * @param courseId l'identifiant du cours
+     * @return un appel à la fonction getCourseById 
+     */
     public Optional<Course> getCourseById(String courseId) {
         return getCourseById(courseId, null);
     }
 
-    /** Fetch a course by ID with optional query params */
+    /** recupere un cours par ID selon les parametres de requete 
+     * @param courseId l'identifiant du cours
+     * @param queryParams les parametres de requete
+     * @return un appel à la fonction Optional pour un choix de cours
+    */
     public Optional<Course> getCourseById(String courseId, Map<String, String> queryParams) {
         Map<String, String> params = (queryParams == null) ? Collections.emptyMap() : queryParams;
         URI uri = HttpClientApi.buildUri(BASE_URL + "/" + courseId, params);
@@ -87,33 +97,6 @@ public class CourseService {
         }
     }
 
-
-    /** Courses by program 
-    public List<String> getCoursesByProgram(Map<String, String> queryParams) {
-
-        Map<String, String> params =
-                (queryParams == null) ? Collections.emptyMap() : queryParams;
-
-        String PROGRAM_URL = "https://planifium-api.onrender.com/api/v1/programs";
-        URI uri = HttpClientApi.buildUri(PROGRAM_URL, params);
-
-        try {
-            List<Map<String, Object>> programs =
-                    clientApi.get(uri, new TypeReference<>() {});
-
-            if (programs.isEmpty()) return Collections.emptyList();
-
-            @SuppressWarnings("unchecked")
-            List<String> courses =
-                    (List<String>) programs.get(0).get("courses");
-
-            return (courses == null) ? Collections.emptyList() : courses;
-
-        } catch (RuntimeException e) {
-            return Collections.emptyList();
-        }
-    }
-*/
     /* Courses by program and semester */
     public List<Course> getCoursesByProgramAndSemester(String programId, String semesterNormalized) {
         // 1) Récupérer les infos programme avec détails cours

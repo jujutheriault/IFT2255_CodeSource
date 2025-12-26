@@ -51,9 +51,15 @@ public class HttpClientApi {
     /** GET and map JSON body to a given class */
     public <T> T get(URI uri, Class<T> clazz) {
         HttpClientApiResponse raw = get(uri);
+
         if (raw.getStatusCode() >= 200 && raw.getStatusCode() < 300) {
             try {
+                if (clazz == String.class) {
+                    return clazz.cast(raw.getBody());
+                }
+
                 return mapper.readValue(raw.getBody(), clazz);
+
             } catch (IOException e) {
                 throw new RuntimeException("Failed to parse JSON: " + e.getMessage(), e);
             }
@@ -61,6 +67,7 @@ public class HttpClientApi {
             throw new RuntimeException("Request failed: " + raw.getStatusCode() + " - " + raw.getStatusMessage());
         }
     }
+
 
     /** GET and map JSON body to collection or complex type */
     public <T> T get(URI uri, TypeReference<T> typeRef) {

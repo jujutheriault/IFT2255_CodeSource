@@ -28,6 +28,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 @ExtendWith(MockitoExtension.class)
 public class CourseServiceTest {
 
@@ -176,6 +178,75 @@ public class CourseServiceTest {
             any(URI.class),
             eq(Course.class));
     }
+
+    /**************************************************************************
+     * Tests for getProgram method
+     *************************************************************************/
+    @Test
+    @DisplayName("getProgram should return parsed JsonNode when API returns valid JSON.")
+    void getProgram_returnsJsonNode() {
+        // ARRANGE
+        String programId = "117510";
+        boolean includeDetail = true;
+        String responseLevel = "reg";
+
+        String rawJson = """
+            [
+            {
+                "id": "117510",
+                "name": "Baccalauréat en informatique",
+                "courses_detail": [
+                { "id": "IFT2255", "name": "Génie logiciel" }
+                ]
+            }
+            ]
+            """;
+
+        when(clientApi.get(any(URI.class), eq(String.class))).thenReturn(rawJson);
+
+        // ACT
+        JsonNode result = service.getProgram(programId, includeDetail, responseLevel);
+
+        // ASSERT
+        try {
+            assertNotNull(result, "JsonNode should not be null");
+            assertTrue(result.isArray(), "Result should be a JSON array (as returned by Planifium)");
+            assertEquals(1, result.size(), "Array should contain 1 program object");
+            assertEquals("117510", result.get(0).get("id").asText(), "Program id should match");
+            OK("Program JSON parsed correctly");
+        } catch (AssertionError e) {
+            Err(e.getMessage());
+            throw e;
+        }
+
+        verify(clientApi, times(1)).get(any(URI.class), eq(String.class));
+    }
+
+
+    @Test
+    @DisplayName("getProgram should throw RuntimeException when API returns invalid JSON.")
+    void getProgram_invalidJson_throws() {
+        // ARRANGE
+        when(clientApi.get(any(URI.class), eq(String.class)))
+            .thenReturn("NOT_A_JSON");
+
+        // ACT + ASSERT
+        RuntimeException ex = assertThrows(RuntimeException.class, () ->
+            service.getProgram("117510", true, "reg")
+        );
+
+        try {
+            assertTrue(ex.getMessage().contains("Impossible de parser"), "Error message should mention parsing failure");
+            OK("RuntimeException thrown as expected for invalid JSON");
+        } catch (AssertionError e) {
+            Err(e.getMessage());
+            throw e;
+        }
+
+        verify(clientApi, times(1)).get(any(URI.class), eq(String.class));
+    }
+
+
 
     // ------------------------------------------------------------------------
     // Helper methods for logging
