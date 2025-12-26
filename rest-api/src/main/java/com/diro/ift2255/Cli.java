@@ -42,6 +42,8 @@ public class Cli {
             System.out.println("2. Manipuler un ensemble de cours");
             System.out.println("3. Consulter la liste de cours d'un programme");
             System.out.println("4. Consulter la liste de cours d'un trimestre");
+            System.out.println("5. Consulter les avis d'un cours");
+            System.out.println("6. Consulter le résumé des avis d'un cours");
             System.out.println("0. Quitter");
             System.out.print("> ");
 
@@ -59,6 +61,12 @@ public class Cli {
                     break;
                 case "4":
                     cliTrimestre(scanner);
+                    break;
+                case "5":
+                    cliGetAvis(scanner);
+                    break;
+                case "6":
+                    cliGetAvisResume(scanner);
                     break;
                 case "0":
                     System.out.println("Fermeture du CLI...");
@@ -182,6 +190,37 @@ public class Cli {
         httpGetAndPrint(url);
 
     }
+
+    /**
+     * Méthode pour récuperer les avis d'un cours 
+     * @param scanner un scanner qui lit les entrées
+     */
+    private void cliGetAvis(Scanner scanner) {
+        System.out.print("Entrez le sigle du cours (ex: IFT2255): ");
+        String sigle = scanner.nextLine().trim().toUpperCase();
+
+        String url = baseHost + "/avis/" + sigle;
+
+        System.out.println("\n[Action] Récupération des avis...");
+        System.out.println("URL cible : " + url);
+        httpGetAndPrint(url);
+    }
+
+    /**
+     * Méthode pour récuperer un résumer des avis d'un cours (moyennes + nombre d'avis)
+     * @param scanner un scanner qui lit les entrées
+     */
+    private void cliGetAvisResume(Scanner scanner) {
+        System.out.print("Entrez le sigle du cours (ex: IFT2255): ");
+        String sigle = scanner.nextLine().trim().toUpperCase();
+
+        String url = baseHost + "/avis/" + sigle + "/resume";
+
+        System.out.println("\n[Action] Récupération du résumé...");
+        System.out.println("URL cible : " + url);
+        httpGetAndPrint(url);
+    }
+
 
     private void httpGetAndPrint(String url) {
     try {

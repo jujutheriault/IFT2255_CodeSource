@@ -65,7 +65,7 @@ public class AvisController {
         String sigle = ctx.pathParam("sigle");
         Map<String, Object> resume = store.getResume(sigle);
 
-        Number countNum = (Number) resume.getOrDefault("count", 0);
+        Number countNum = (Number) resume.getOrDefault("nombreAvis", 0);
         int count = countNum.intValue();
 
         if (count == 0) {
