@@ -204,6 +204,7 @@ async def on_message(message: discord.Message):
     if semester is None or diff is None or work is None:
         await message.reply(
             "⚠️ Format d’avis non valide.\n"
+            "⚠️ Merci d'envoyer **un seul cours par message** pour éviter de mélanger les champs.\n"
             "Veuillez écrire votre avis suivant le format suivant:\n"
             "- `<sigle du cours> <trimestre> diff <1–5> travail <1–5> prof <nom>`\n"
             "Exemples:\n"
