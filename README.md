@@ -147,7 +147,7 @@ Les tests sont exécutés automatiquement à chaque push et pull request vers le
 3. **Configuration du fichier .env**
 Créer un fichier .env dans le dossier discord_bot/
     ```bash
-    DISCORD_TOKEN= (Token donné hors du repo git)
+    DISCORD_TOKEN= (Token donné dans le channel discord de l'équipe 14)
     GUILD_ID=1449881612547260557
     OPINION_API_URL=http://localhost:7070/avis
 
