@@ -138,7 +138,7 @@ Les tests sont exécutés automatiquement à chaque push et pull request vers le
     ```bash
     cd discord_bot
     python3 -m venv .venv
-    source .venv/bin/activate`
+    source .venv/bin/activate
 
 2.  **Installation des dépendances**
     ```bash
