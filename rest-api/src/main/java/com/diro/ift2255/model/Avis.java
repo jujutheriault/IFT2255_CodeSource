@@ -12,6 +12,7 @@ public class Avis {
     private int volumeTravail;
     private String professeur;
     private int nombreAvis;
+    private String commentaire;
 
     /**
      * Constructeur d'avis par defaut
@@ -130,4 +131,16 @@ public class Avis {
      * @param nombreAvis le score donne pour un cours dans l'avis
      */
     public void setNombreAvis(int nombreAvis) { this.nombreAvis = nombreAvis; }
+
+    /**
+     * Getter pour le commentaire d'un avis
+     * @return le commentaire d'un avis
+     */
+    public String getCommentaire() { return commentaire; }
+
+    /**
+     * Setter pour le commentaire d'un avis
+     * @param commentaire
+     */
+    public void setCommentaire(String commentaire) { this.commentaire = commentaire; }
 }

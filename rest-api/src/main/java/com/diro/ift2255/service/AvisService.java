@@ -28,6 +28,7 @@ public class AvisService {
         this.filePath = Paths.get(filePath);
         ensureParentDir();
         loadFromFile(); // recharge au démarrage
+        System.out.println("[AvisService] fichier avis = " + this.filePath.toAbsolutePath());
     }
 
     public synchronized void add(Avis avis) {
@@ -59,7 +60,7 @@ public class AvisService {
 
         return Map.of(
                 "sigle", normalizeSigle(sigle),
-                "count", n,
+                "nombreAvis", n,
                 "avgNivDifficulte", avgDiff,
                 "avgVolumeTravail", avgWork
         );

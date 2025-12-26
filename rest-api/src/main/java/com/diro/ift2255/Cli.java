@@ -5,10 +5,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
-import java.util.Scanner;
-
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
 
 
 public class Cli {
@@ -48,6 +47,8 @@ public class Cli {
             System.out.println("4. Consulter la liste de cours d'un trimestre");
             System.out.println("5. Consulter un cours par ID");
             System.out.println("6. Vérifier l'éligibilité à un cours");
+            System.out.println("7. Consulter les avis d'un cours");
+            System.out.println("8. Consulter le résumé des avis d'un cours");
             System.out.println("0. Quitter");
             System.out.print("> ");
 
@@ -70,13 +71,21 @@ public class Cli {
                 case "4":
                     cliTrimestre(scanner);
                     break;
+                // Consulter détails d'un cours selon son sigle
                 case "5":
-                // Consulter tous les détails d'un cours
                     cliCourseById(scanner);
                     break;
-                case "6":
                 // Vérifier son éligibilité à un cours
+                case "6":
                     cliEligibility(scanner);
+                    break;
+                // Consulter les avis d'un cours
+                case "7":
+                    cliGetAvis(scanner);
+                    break;
+                // Consulter un résumé des avis d'un cours (moyenne + nbre avis)
+                case "8":
+                    cliGetAvisResume(scanner);
                     break;
                 case "0":
                     System.out.println("Fermeture du CLI...");
@@ -208,7 +217,37 @@ public class Cli {
     }
 
     /**
- * Consultation d'un cours par son ID
+     * Méthode pour récuperer les avis d'un cours 
+     * @param scanner un scanner qui lit les entrées
+     */
+    private void cliGetAvis(Scanner scanner) {
+        System.out.print("Entrez le sigle du cours (ex: IFT2255): ");
+        String sigle = scanner.nextLine().trim().toUpperCase();
+
+        String url = baseHost + "/avis/" + sigle;
+
+        System.out.println("\n[Action] Récupération des avis...");
+        System.out.println("URL cible : " + url);
+        httpGetAndPrint(url);
+    }
+
+    /**
+     * Méthode pour récuperer un résumer des avis d'un cours (moyennes + nombre d'avis)
+     * @param scanner un scanner qui lit les entrées
+     */
+    private void cliGetAvisResume(Scanner scanner) {
+        System.out.print("Entrez le sigle du cours (ex: IFT2255): ");
+        String sigle = scanner.nextLine().trim().toUpperCase();
+
+        String url = baseHost + "/avis/" + sigle + "/resume";
+
+        System.out.println("\n[Action] Récupération du résumé...");
+        System.out.println("URL cible : " + url);
+        httpGetAndPrint(url);
+    }
+
+
+ /** Consultation d'un cours par son ID
  * @param scanner scanner pour lire l'entrée utilisateur
  */
     private void cliCourseById(Scanner scanner) {

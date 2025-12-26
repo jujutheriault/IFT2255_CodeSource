@@ -118,6 +118,23 @@ def semester_to_year(semester: str):
     yy = int(semester[1:])
     return 2000 + yy
 
+def extract_comment(text: str) -> str:
+    t = (text or "").strip()
+
+    t = COURSE_RE.sub("", t)
+    t = SEM_RE.sub("", t)
+    t = DIFF_RE.sub("", t)
+    t = WORK_RE.sub("", t)
+    t = PROF_NAME_RE.sub("", t)
+
+    t = re.sub(r"\b(prof|professeur|d|diff|difficulte|difficulté|t|travail|charge|work|sem|session|trimestre)\b", "", t, flags=re.IGNORECASE)
+
+    t = re.sub(r"^[\s:;,\-–—]+", "", t)
+    t = re.sub(r"\s+", " ", t).strip()
+
+    return t
+
+
 #def infer_trimester_and_year():
     #now = datetime.datetime.now()
    # m, y = now.month, now.year
@@ -143,6 +160,10 @@ async def post_opinion_to_api(record: dict):
     if not OPINION_API_URL:
         print("OPINION_API_URL is not set, skipping POST.")
         return
+    
+    print("OPINION_API_URL =", OPINION_API_URL)
+    print("Payload envoyé =", record)
+
 
     try:
         async with aiohttp.ClientSession() as session:
@@ -198,6 +219,7 @@ async def on_message(message: discord.Message):
 
 
     prof = extract_professor_name(text) or ""
+    commentaire = extract_comment(text)  
     trimestre = semester              # ex: A25
     annee = semester_to_year(semester) # ex: 2025
 
@@ -216,6 +238,7 @@ async def on_message(message: discord.Message):
             "nivDifficulte": diff,
             "volumeTravail": work,
             "professeur": prof,
+            "commentaire": commentaire,
             "nombreAvis": 1
         }
 
