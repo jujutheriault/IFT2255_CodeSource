@@ -5,10 +5,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
-import java.util.Scanner;
-
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
 
 
 public class Cli {
@@ -46,10 +45,10 @@ public class Cli {
             System.out.println("2. Manipuler un ensemble de cours");
             System.out.println("3. Consulter la liste de cours d'un programme");
             System.out.println("4. Consulter la liste de cours d'un trimestre");
-            System.out.println("5. Consulter les avis d'un cours");
-            System.out.println("6. Consulter le résumé des avis d'un cours");
             System.out.println("5. Consulter un cours par ID");
             System.out.println("6. Vérifier l'éligibilité à un cours");
+            System.out.println("7. Consulter les avis d'un cours");
+            System.out.println("8. Consulter le résumé des avis d'un cours");
             System.out.println("0. Quitter");
             System.out.print("> ");
 
@@ -72,17 +71,21 @@ public class Cli {
                 case "4":
                     cliTrimestre(scanner);
                     break;
+                // Consulter détails d'un cours selon son sigle
                 case "5":
-                    cliGetAvis(scanner);
-                    break;
-                case "6":
-                    cliGetAvisResume(scanner);
-                // Consulter tous les détails d'un cours
                     cliCourseById(scanner);
                     break;
-                case "6":
                 // Vérifier son éligibilité à un cours
+                case "6":
                     cliEligibility(scanner);
+                    break;
+                // Consulter les avis d'un cours
+                case "7":
+                    cliGetAvis(scanner);
+                    break;
+                // Consulter un résumé des avis d'un cours (moyenne + nbre avis)
+                case "8":
+                    cliGetAvisResume(scanner);
                     break;
                 case "0":
                     System.out.println("Fermeture du CLI...");
@@ -244,7 +247,7 @@ public class Cli {
     }
 
 
- * Consultation d'un cours par son ID
+ /** Consultation d'un cours par son ID
  * @param scanner scanner pour lire l'entrée utilisateur
  */
     private void cliCourseById(Scanner scanner) {
