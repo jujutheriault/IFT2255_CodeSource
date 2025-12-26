@@ -92,7 +92,7 @@ public class Routes {
     }
 
     private static void registerAvisRoutes(Javalin app) {
-        AvisService avisService = new AvisService("data/avis.ndjson");
+        AvisService avisService = new AvisService("../data/avis.ndjson");
         AvisController avisController = new AvisController(avisService);
 
         app.post("/avis", avisController::createAvis);
